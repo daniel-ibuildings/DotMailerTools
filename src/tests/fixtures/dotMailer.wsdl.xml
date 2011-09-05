@@ -1,0 +1,3539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://apiconnector.com" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://apiconnector.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;p&gt;APIConnector for integration with our email marketing system&lt;/p&gt;&lt;li&gt;You may only access this system when the account you are using has been granted API permission.&lt;/li&gt;&lt;li&gt;Furthermore, you may not use your main account - a separate login must be created within your account, for use with the API.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;All datetime parameters are expected to be in UTC, and datetimes will be returned in UTC&lt;/strong&gt;. Please call GetServerTime if in doubt.&lt;/li&gt;</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://apiconnector.com">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="ListContactsInAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListContactsInAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListContactsInAddressBookResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAPIContact">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APIContact" nillable="true" type="tns:APIContact" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="APIContact">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AudienceType" type="tns:ContactAudienceTypes" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataFields" type="tns:ContactDataFields" />
+          <s:element minOccurs="1" maxOccurs="1" name="OptInType" type="tns:ContactOptInTypes" />
+          <s:element minOccurs="1" maxOccurs="1" name="EmailType" type="tns:ContactEmailTypes" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ContactAudienceTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="B2C" />
+          <s:enumeration value="B2B" />
+          <s:enumeration value="B2M" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ContactDataFields">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Keys" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Values" type="tns:ArrayOfAnyType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ContactOptInTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="Single" />
+          <s:enumeration value="Double" />
+          <s:enumeration value="VerifiedDouble" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ContactEmailTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="PlainText" />
+          <s:enumeration value="Html" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ListContactsInAddressBookWithFullData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListContactsInAddressBookWithFullDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListContactsInAddressBookWithFullDataResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContacts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContactsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListModifiedContactsResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListUnsubscribersAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListUnsubscribersAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListUnsubscribersAddressBookResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContacts2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContacts2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListModifiedContacts2Result" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListNewContacts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListNewContactsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListNewContactsResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContactsInAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContactsInAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListModifiedContactsInAddressBookResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContactsInAddressBook2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sinceDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListModifiedContactsInAddressBook2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListModifiedContactsInAddressBook2Result" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContacts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContactsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListHardBouncingContactsResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncesContacts2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncesContacts2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListHardBouncesContacts2Result" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContactsWithLabels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="labels" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContactsWithLabelsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListHardBouncingContactsWithLabelsResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContactsWithLabels2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="labels" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListHardBouncingContactsWithLabels2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListHardBouncingContactsWithLabels2Result" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignActivities">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumClicks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Unsubscribed" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumViews" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumEstimatedForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumForwardToFriend" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumReplies" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateFirstOpened" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateLastOpened" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateSent" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstOpenIp" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstOpenUserAgent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SoftBounced" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="HardBounced" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactSummary" nillable="true" type="tns:APICampaignContactSummary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignActivitiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignActivitiesResult" type="tns:ArrayOfAPICampaignContactSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignOpeners">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactOpen">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ipAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userAgent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isHtml" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="isForward" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="dateOpened" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="APICampaignContactOpen2">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:APICampaignContactOpen">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="MailClient" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="MailClientVersion" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactOpen2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactOpen2" nillable="true" type="tns:APICampaignContactOpen2" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignOpenersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignOpenersResult" type="tns:ArrayOfAPICampaignContactOpen2" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignClickers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactClick">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="url" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ipAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userAgent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dateClicked" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="APICampaignContactClick2">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:APICampaignContactClick">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactClick2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactClick2" nillable="true" type="tns:APICampaignContactClick2" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignClickersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignClickersResult" type="tns:ArrayOfAPICampaignContactClick2" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignClickers2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAPICampaignContactClick3">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactClick3" nillable="true" type="tns:APICampaignContactClick3" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="APICampaignContactClick3">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:APICampaignContactClick2">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Keyword" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ListCampaignClickers2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignClickers2Result" type="tns:ArrayOfAPICampaignContactClick3" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignActivitiesSinceDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignActivitiesSinceDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignActivitiesSinceDateResult" type="tns:ArrayOfAPICampaignContactSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactActivity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactActivityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactActivityResult" type="tns:APICampaignContactSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListUnsubscribers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListUnsubscribersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListUnsubscribersResult" type="tns:ArrayOfAPIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListSuppressedContacts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APIContactSuppressionSummary">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DateRemoved" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="SuppressedContact" type="tns:APIContact" />
+          <s:element minOccurs="1" maxOccurs="1" name="Reason" type="tns:ContactStatuses" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ContactStatuses">
+        <s:restriction base="s:string">
+          <s:enumeration value="Subscribed" />
+          <s:enumeration value="UnSubscribed" />
+          <s:enumeration value="SoftBounced" />
+          <s:enumeration value="HardBounced" />
+          <s:enumeration value="ISPComplained" />
+          <s:enumeration value="MailBlocked" />
+          <s:enumeration value="PendingOptIn" />
+          <s:enumeration value="DirectComplaint" />
+          <s:enumeration value="SpamTrap" />
+          <s:enumeration value="Deleted" />
+          <s:enumeration value="BlockedLocalPart" />
+          <s:enumeration value="SharedSuppression" />
+          <s:enumeration value="SharedSuppressionCreation" />
+          <s:enumeration value="SharedDomainSuppression" />
+          <s:enumeration value="DomainSuppression" />
+          <s:enumeration value="NoMXRecord" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfAPIContactSuppressionSummary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APIContactSuppressionSummary" nillable="true" type="tns:APIContactSuppressionSummary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListSuppressedContactsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListSuppressedContactsResult" type="tns:ArrayOfAPIContactSuppressionSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateContactResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateContactResult" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateDataField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fieldname" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="datatype" type="tns:ContactDataTypes" />
+            <s:element minOccurs="0" maxOccurs="1" name="defaultValue" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ContactDataTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="String" />
+          <s:enumeration value="Numeric" />
+          <s:enumeration value="Date" />
+          <s:enumeration value="Boolean" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="CreateDataFieldResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeleteDataField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fieldname" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APIDependencyResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Dependencies" type="tns:ArrayOfAPIDependency" />
+          <s:element minOccurs="1" maxOccurs="1" name="Result" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPIDependency">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APIDependency" nillable="true" type="tns:APIDependency" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="APIDependency">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:BusinessObjectType" />
+          <s:element minOccurs="1" maxOccurs="1" name="ObjectID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="BusinessObjectType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Campaign" />
+          <s:enumeration value="Survey" />
+          <s:enumeration value="MicrositePage" />
+          <s:enumeration value="DynamicContent" />
+          <s:enumeration value="ContactLabel" />
+          <s:enumeration value="SurveyQuestion" />
+          <s:enumeration value="AddressBook" />
+          <s:enumeration value="DynamicContentRule" />
+          <s:enumeration value="CampaignLink" />
+          <s:enumeration value="CampaignTemplate" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="DeleteDataFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteDataFieldResult" type="tns:APIDependencyResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContactResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AddContactToAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact" type="tns:APIContact" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressbookId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddContactToAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddContactToAddressBookResult" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveContactFromAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact" type="tns:APIContact" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="preventAddressbookResubscribe" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalUnsubscribe" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveContactFromAddressBookResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="RemoveAllContactsFromAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="preventAddressbookResubscribe" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalUnsubscribe" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveAllContactsFromAddressBookResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetContactByEmail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactByEmailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetContactByEmailResult" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetContactByIdResult" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddContactsToAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressbookID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="data" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="dataType" type="tns:ImportDataType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ImportDataType">
+        <s:restriction base="s:string">
+          <s:enumeration value="CSV" />
+          <s:enumeration value="XLS" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AddContactsToAddressBookResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AddContactsToAddressBookWithProgress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressbookID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="data" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="dataType" type="tns:ImportDataType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddContactsToAddressBookWithProgressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddContactsToAddressBookWithProgressResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactImportProgress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="progressID" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactImportProgressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetContactImportProgressResult" type="tns:ImportStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ImportStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Finished" />
+          <s:enumeration value="NotFinished" />
+          <s:enumeration value="RejectedByWatchdog" />
+          <s:enumeration value="InvalidFileFormat" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetCampaignSendProgress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="progressID" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampaignSendProgressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetCampaignSendProgressResult" type="tns:SendProgress" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="SendProgress">
+        <s:restriction base="s:string">
+          <s:enumeration value="NotSent" />
+          <s:enumeration value="Scheduled" />
+          <s:enumeration value="Sending" />
+          <s:enumeration value="Sent" />
+          <s:enumeration value="Cancelled" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetContactImportReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="progressID" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APIImportReport">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NewContacts" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="UpdatedContacts" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GloballySuppressed" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="InvalidEntries" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DuplicateEmails" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Blocked" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Unsubscribed" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="HardBounced" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SoftBounced" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ISPComplaints" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MailBlocked" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DomainSuppressed" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PendingDoubleOptin" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Failures" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetContactImportReportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetContactImportReportResult" type="tns:APIImportReport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactImportReportFaults">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="progressID" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContactImportReportFaultsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetContactImportReportFaultsResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAddressBooks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APIAddressBook">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPIAddressBook">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APIAddressBook" nillable="true" type="tns:APIAddressBook" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListAddressBooksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListAddressBooksResult" type="tns:ArrayOfAPIAddressBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListContactDataLabels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ContactDataLabel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:ContactDataTypes" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsPrivate" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfContactDataLabel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ContactDataLabel" nillable="true" type="tns:ContactDataLabel" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListContactDataLabelsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListContactDataLabelsResult" type="tns:ArrayOfContactDataLabel" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAddressBooksForContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact" type="tns:APIContact" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAddressBooksForContactResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListAddressBooksForContactResult" type="tns:ArrayOfAPIAddressBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAddressBooksForCampaign">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAddressBooksForCampaignResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListAddressBooksForCampaignResult" type="tns:ArrayOfAPIAddressBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignsForAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressBookID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaign">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FromName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HTMLContent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PlaintextContent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReplyAction" type="tns:ReplyActions" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReplyToAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" default="NotSet" name="Status" type="tns:CampaignStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="Subject" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ReplyActions">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unset" />
+          <s:enumeration value="WebMailForward" />
+          <s:enumeration value="Webmail" />
+          <s:enumeration value="Delete" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="CampaignStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="NotSet" />
+          <s:enumeration value="Unsent" />
+          <s:enumeration value="Sending" />
+          <s:enumeration value="Sent" />
+          <s:enumeration value="Paused" />
+          <s:enumeration value="Cancelled" />
+          <s:enumeration value="RequiresApproval" />
+          <s:enumeration value="RequiresSMSApproval" />
+          <s:enumeration value="Triggered" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfAPICampaign">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaign" nillable="true" type="tns:APICampaign" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignsForAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignsForAddressBookResult" type="tns:ArrayOfAPICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="book" type="tns:APIAddressBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateAddressBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateAddressBookResult" type="tns:APIAddressBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteAddressBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressbookid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteAddressBookResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAddressBookContactCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="addressbookid" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAddressBookContactCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAddressBookContactCountResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactReplies">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactReply">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="toAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fromAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isHtml" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="dateReplied" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="replyType" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactReply">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactReply" nillable="true" type="tns:APICampaignContactReply" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactRepliesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactRepliesResult" type="tns:ArrayOfAPICampaignContactReply" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactClicks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAPICampaignContactClick">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactClick" nillable="true" type="tns:APICampaignContactClick" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactClicksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactClicksResult" type="tns:ArrayOfAPICampaignContactClick" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactClicks2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactClicks2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactClicks2Result" type="tns:ArrayOfAPICampaignContactClick3" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactPageViews">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactPageView">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="url" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dateViewed" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactPageView">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactPageView" nillable="true" type="tns:APICampaignContactPageView" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactPageViewsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactPageViewsResult" type="tns:ArrayOfAPICampaignContactPageView" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactOpens">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAPICampaignContactOpen">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactOpen" nillable="true" type="tns:APICampaignContactOpen" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactOpensResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactOpensResult" type="tns:ArrayOfAPICampaignContactOpen" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactRoiDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactROIDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="marker" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="value" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dateEntered" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactROIDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactROIDetail" nillable="true" type="tns:APICampaignContactROIDetail" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactRoiDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactRoiDetailResult" type="tns:ArrayOfAPICampaignContactROIDetail" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampaignContactForwardInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="getEstimates" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactForward">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="numForwards" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCampaignContactForwardInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCampaignContactForwardInfoResult" type="tns:APICampaignContactForward" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignContactSocialBookmarkViews">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignContactSocialBookmark">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="numViews" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICampaignContactSocialBookmark">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICampaignContactSocialBookmark" nillable="true" type="tns:APICampaignContactSocialBookmark" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListCampaignContactSocialBookmarkViewsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignContactSocialBookmarkViewsResult" type="tns:ArrayOfAPICampaignContactSocialBookmark" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaigns">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaignsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaignsResult" type="tns:ArrayOfAPICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaigns2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="select" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="skip" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListCampaigns2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListCampaigns2Result" type="tns:ArrayOfAPICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListAvailableCustomFromAddresses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICustomFromAddress">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAPICustomFromAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="APICustomFromAddress" nillable="true" type="tns:APICustomFromAddress" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListAvailableCustomFromAddressesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListAvailableCustomFromAddressesResult" type="tns:ArrayOfAPICustomFromAddress" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCampaignCustomFromAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="fromaddressId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCampaignCustomFromAddressResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListSentCampaignsWithActivitySinceDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListSentCampaignsWithActivitySinceDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListSentCampaignsWithActivitySinceDateResult" type="tns:ArrayOfAPICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampaign">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampaignResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCampaignResult" type="tns:APICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsSplitTestCampaign">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsSplitTestCampaignResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsSplitTestCampaignResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampaignSummary">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APICampaignSummary">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NumUniqueOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumUniqueTextOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalUniqueOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalOpens" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumClicks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextClicks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalClicks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumPageViews" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalPageViews" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextPageViews" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumEstimatedForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextEstimatedForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalEstimatedForwards" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumReplies" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextReplies" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalReplies" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumHardBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextHardBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalHardBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumSoftBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextSoftBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalSoftBounces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumUnsubscribes" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextUnsubscribes" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalUnsubscribes" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumISPComplaints" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextISPComplaints" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalISPComplaints" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumMailBlocks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextMailBlocks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalMailBlocks" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumSent" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextSent" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalSent" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumRecipientsClicked" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumDelivered" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTextDelivered" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumTotalDelivered" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateSent" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageDelivered" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageUniqueOpens" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageOpens" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageUnsubscribes" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageReplies" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageHardBounces" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageSoftBounces" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageUsersClicked" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentageClicksToOpens" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCampaignSummaryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCampaignSummaryResult" type="tns:APICampaignSummary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendCampaignToAddressBooks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="addressBookIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SendCampaignToAddressBooksResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SendCampaignToAddressBooksWithProgress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="addressBookIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendCampaignToAddressBooksWithProgressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SendCampaignToAddressBooksWithProgressResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendSplitTestCampaignToAddressBookWithProgress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="addressBookIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="testPercentage" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="testPeriodHours" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="testMetric" type="tns:APISplitTestMetric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="APISplitTestMetric">
+        <s:restriction base="s:string">
+          <s:enumeration value="Opens" />
+          <s:enumeration value="Clicks" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SendSplitTestCampaignToAddressBookWithProgressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SendSplitTestCampaignToAddressBookWithProgressResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendCampaignToContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="campaignId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="contactid" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sendDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendCampaignToContactResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CreateCampaign">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="campaign" type="tns:APICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateCampaignResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateCampaignResult" type="tns:APICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCampaign">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="campaign" type="tns:APICampaign" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCampaignResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerTime">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetServerTimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetServerTimeResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendSingleSMSMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telephoneNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendSingleSMSMessageResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ListContactsInAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:ListContactsInAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="ListContactsInAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:ListContactsInAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListContactsInAddressBookWithFullDataSoapIn">
+    <wsdl:part name="parameters" element="tns:ListContactsInAddressBookWithFullData" />
+  </wsdl:message>
+  <wsdl:message name="ListContactsInAddressBookWithFullDataSoapOut">
+    <wsdl:part name="parameters" element="tns:ListContactsInAddressBookWithFullDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListModifiedContacts" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListModifiedContactsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListUnsubscribersAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:ListUnsubscribersAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="ListUnsubscribersAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:ListUnsubscribersAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContacts2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListModifiedContacts2" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContacts2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListModifiedContacts2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListNewContactsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListNewContacts" />
+  </wsdl:message>
+  <wsdl:message name="ListNewContactsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListNewContactsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsInAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:ListModifiedContactsInAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsInAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:ListModifiedContactsInAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsInAddressBook2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListModifiedContactsInAddressBook2" />
+  </wsdl:message>
+  <wsdl:message name="ListModifiedContactsInAddressBook2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListModifiedContactsInAddressBook2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContacts" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContactsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncesContacts2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListHardBouncesContacts2" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncesContacts2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListHardBouncesContacts2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsWithLabelsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContactsWithLabels" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsWithLabelsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContactsWithLabelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsWithLabels2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContactsWithLabels2" />
+  </wsdl:message>
+  <wsdl:message name="ListHardBouncingContactsWithLabels2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListHardBouncingContactsWithLabels2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignActivitiesSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignActivities" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignActivitiesSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignActivitiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignOpenersSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignOpeners" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignOpenersSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignOpenersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignClickersSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignClickers" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignClickersSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignClickersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignClickers2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignClickers2" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignClickers2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignClickers2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignActivitiesSinceDateSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignActivitiesSinceDate" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignActivitiesSinceDateSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignActivitiesSinceDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactActivitySoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactActivity" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactActivitySoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactActivityResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListUnsubscribersSoapIn">
+    <wsdl:part name="parameters" element="tns:ListUnsubscribers" />
+  </wsdl:message>
+  <wsdl:message name="ListUnsubscribersSoapOut">
+    <wsdl:part name="parameters" element="tns:ListUnsubscribersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListSuppressedContactsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListSuppressedContacts" />
+  </wsdl:message>
+  <wsdl:message name="ListSuppressedContactsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListSuppressedContactsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateContactSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateContact" />
+  </wsdl:message>
+  <wsdl:message name="CreateContactSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateDataFieldSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateDataField" />
+  </wsdl:message>
+  <wsdl:message name="CreateDataFieldSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateDataFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteDataFieldSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteDataField" />
+  </wsdl:message>
+  <wsdl:message name="DeleteDataFieldSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteDataFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContactSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateContact" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContactSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddContactToAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:AddContactToAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="AddContactToAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:AddContactToAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveContactFromAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveContactFromAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="RemoveContactFromAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveContactFromAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveAllContactsFromAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveAllContactsFromAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="RemoveAllContactsFromAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveAllContactsFromAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByEmailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContactByEmail" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByEmailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContactByEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContactById" />
+  </wsdl:message>
+  <wsdl:message name="GetContactByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContactByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddContactsToAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:AddContactsToAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="AddContactsToAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:AddContactsToAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddContactsToAddressBookWithProgressSoapIn">
+    <wsdl:part name="parameters" element="tns:AddContactsToAddressBookWithProgress" />
+  </wsdl:message>
+  <wsdl:message name="AddContactsToAddressBookWithProgressSoapOut">
+    <wsdl:part name="parameters" element="tns:AddContactsToAddressBookWithProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportProgressSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContactImportProgress" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportProgressSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContactImportProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSendProgressSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCampaignSendProgress" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSendProgressSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCampaignSendProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportReportSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContactImportReport" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportReportSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContactImportReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportReportFaultsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContactImportReportFaults" />
+  </wsdl:message>
+  <wsdl:message name="GetContactImportReportFaultsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContactImportReportFaultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksSoapIn">
+    <wsdl:part name="parameters" element="tns:ListAddressBooks" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksSoapOut">
+    <wsdl:part name="parameters" element="tns:ListAddressBooksResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListContactDataLabelsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListContactDataLabels" />
+  </wsdl:message>
+  <wsdl:message name="ListContactDataLabelsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListContactDataLabelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksForContactSoapIn">
+    <wsdl:part name="parameters" element="tns:ListAddressBooksForContact" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksForContactSoapOut">
+    <wsdl:part name="parameters" element="tns:ListAddressBooksForContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksForCampaignSoapIn">
+    <wsdl:part name="parameters" element="tns:ListAddressBooksForCampaign" />
+  </wsdl:message>
+  <wsdl:message name="ListAddressBooksForCampaignSoapOut">
+    <wsdl:part name="parameters" element="tns:ListAddressBooksForCampaignResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignsForAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignsForAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignsForAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignsForAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="CreateAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteAddressBookSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteAddressBook" />
+  </wsdl:message>
+  <wsdl:message name="DeleteAddressBookSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteAddressBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAddressBookContactCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAddressBookContactCount" />
+  </wsdl:message>
+  <wsdl:message name="GetAddressBookContactCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAddressBookContactCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactRepliesSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactReplies" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactRepliesSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactRepliesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactClicksSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactClicks" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactClicksSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactClicksResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactClicks2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactClicks2" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactClicks2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactClicks2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactPageViewsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactPageViews" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactPageViewsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactPageViewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactOpensSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactOpens" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactOpensSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactOpensResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactRoiDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactRoiDetail" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactRoiDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactRoiDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignContactForwardInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCampaignContactForwardInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignContactForwardInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCampaignContactForwardInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactSocialBookmarkViewsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactSocialBookmarkViews" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignContactSocialBookmarkViewsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignContactSocialBookmarkViewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignsSoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaigns" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaignsSoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaignsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaigns2SoapIn">
+    <wsdl:part name="parameters" element="tns:ListCampaigns2" />
+  </wsdl:message>
+  <wsdl:message name="ListCampaigns2SoapOut">
+    <wsdl:part name="parameters" element="tns:ListCampaigns2Response" />
+  </wsdl:message>
+  <wsdl:message name="ListAvailableCustomFromAddressesSoapIn">
+    <wsdl:part name="parameters" element="tns:ListAvailableCustomFromAddresses" />
+  </wsdl:message>
+  <wsdl:message name="ListAvailableCustomFromAddressesSoapOut">
+    <wsdl:part name="parameters" element="tns:ListAvailableCustomFromAddressesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCampaignCustomFromAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:SetCampaignCustomFromAddress" />
+  </wsdl:message>
+  <wsdl:message name="SetCampaignCustomFromAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:SetCampaignCustomFromAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListSentCampaignsWithActivitySinceDateSoapIn">
+    <wsdl:part name="parameters" element="tns:ListSentCampaignsWithActivitySinceDate" />
+  </wsdl:message>
+  <wsdl:message name="ListSentCampaignsWithActivitySinceDateSoapOut">
+    <wsdl:part name="parameters" element="tns:ListSentCampaignsWithActivitySinceDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCampaign" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCampaignResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsSplitTestCampaignSoapIn">
+    <wsdl:part name="parameters" element="tns:IsSplitTestCampaign" />
+  </wsdl:message>
+  <wsdl:message name="IsSplitTestCampaignSoapOut">
+    <wsdl:part name="parameters" element="tns:IsSplitTestCampaignResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSummarySoapIn">
+    <wsdl:part name="parameters" element="tns:GetCampaignSummary" />
+  </wsdl:message>
+  <wsdl:message name="GetCampaignSummarySoapOut">
+    <wsdl:part name="parameters" element="tns:GetCampaignSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToAddressBooksSoapIn">
+    <wsdl:part name="parameters" element="tns:SendCampaignToAddressBooks" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToAddressBooksSoapOut">
+    <wsdl:part name="parameters" element="tns:SendCampaignToAddressBooksResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToAddressBooksWithProgressSoapIn">
+    <wsdl:part name="parameters" element="tns:SendCampaignToAddressBooksWithProgress" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToAddressBooksWithProgressSoapOut">
+    <wsdl:part name="parameters" element="tns:SendCampaignToAddressBooksWithProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendSplitTestCampaignToAddressBookWithProgressSoapIn">
+    <wsdl:part name="parameters" element="tns:SendSplitTestCampaignToAddressBookWithProgress" />
+  </wsdl:message>
+  <wsdl:message name="SendSplitTestCampaignToAddressBookWithProgressSoapOut">
+    <wsdl:part name="parameters" element="tns:SendSplitTestCampaignToAddressBookWithProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToContactSoapIn">
+    <wsdl:part name="parameters" element="tns:SendCampaignToContact" />
+  </wsdl:message>
+  <wsdl:message name="SendCampaignToContactSoapOut">
+    <wsdl:part name="parameters" element="tns:SendCampaignToContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateCampaignSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateCampaign" />
+  </wsdl:message>
+  <wsdl:message name="CreateCampaignSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateCampaignResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCampaignSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCampaign" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCampaignSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCampaignResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerTimeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetServerTime" />
+  </wsdl:message>
+  <wsdl:message name="GetServerTimeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetServerTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendSingleSMSMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:SendSingleSMSMessage" />
+  </wsdl:message>
+  <wsdl:message name="SendSingleSMSMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:SendSingleSMSMessageResponse" />
+  </wsdl:message>
+  <wsdl:portType name="APISoap">
+    <wsdl:operation name="ListContactsInAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts in a given address book</wsdl:documentation>
+      <wsdl:input message="tns:ListContactsInAddressBookSoapIn" />
+      <wsdl:output message="tns:ListContactsInAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListContactsInAddressBookWithFullData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts in a given address book, returning all data fields (slower; please consider ListContactsInAddressBook as a faster option)</wsdl:documentation>
+      <wsdl:input message="tns:ListContactsInAddressBookWithFullDataSoapIn" />
+      <wsdl:output message="tns:ListContactsInAddressBookWithFullDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who were modified between two specified dates.</wsdl:documentation>
+      <wsdl:input message="tns:ListModifiedContactsSoapIn" />
+      <wsdl:output message="tns:ListModifiedContactsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribersAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who have unsubscribed from a given address book</wsdl:documentation>
+      <wsdl:input message="tns:ListUnsubscribersAddressBookSoapIn" />
+      <wsdl:output message="tns:ListUnsubscribersAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieve a list of modified contacts after a specified date. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListModifiedContacts2SoapIn" />
+      <wsdl:output message="tns:ListModifiedContacts2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListNewContacts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieve a list of new contacts, created after a specified date. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListNewContactsSoapIn" />
+      <wsdl:output message="tns:ListNewContactsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who were modified between two specified dates, in a given address book</wsdl:documentation>
+      <wsdl:input message="tns:ListModifiedContactsInAddressBookSoapIn" />
+      <wsdl:output message="tns:ListModifiedContactsInAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who were modified since a given date, in a given address book</wsdl:documentation>
+      <wsdl:input message="tns:ListModifiedContactsInAddressBook2SoapIn" />
+      <wsdl:output message="tns:ListModifiedContactsInAddressBook2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContacts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who hard bounced when sending a particular campaign.</wsdl:documentation>
+      <wsdl:input message="tns:ListHardBouncingContactsSoapIn" />
+      <wsdl:output message="tns:ListHardBouncingContactsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncesContacts2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who hard bounces when sending a particular campaign. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListHardBouncesContacts2SoapIn" />
+      <wsdl:output message="tns:ListHardBouncesContacts2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who hard bounced when sending a particular campaign, along with specified data labels.</wsdl:documentation>
+      <wsdl:input message="tns:ListHardBouncingContactsWithLabelsSoapIn" />
+      <wsdl:output message="tns:ListHardBouncingContactsWithLabelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who hard bounced when sending a particular campaign, along with specified data labels. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListHardBouncingContactsWithLabels2SoapIn" />
+      <wsdl:output message="tns:ListHardBouncingContactsWithLabels2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivities">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who were sent a campaign. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignActivitiesSoapIn" />
+      <wsdl:output message="tns:ListCampaignActivitiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignOpeners">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of openers of a campaign, along with their statistics. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignOpenersSoapIn" />
+      <wsdl:output message="tns:ListCampaignOpenersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of clickers of a campaign, along with their statistics. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignClickersSoapIn" />
+      <wsdl:output message="tns:ListCampaignClickersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of clickers of a campaign, along with their statistics. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignClickers2SoapIn" />
+      <wsdl:output message="tns:ListCampaignClickers2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivitiesSinceDate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of contacts who were sent a campaign, and retrieves only those contacts who responded (e.g. clicked, opened) after a specified date. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignActivitiesSinceDateSoapIn" />
+      <wsdl:output message="tns:ListCampaignActivitiesSinceDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactActivity">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves activity for a given contact and campaign.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactActivitySoapIn" />
+      <wsdl:output message="tns:ListCampaignContactActivitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of unsubscribers who unsubscribed after a given date</wsdl:documentation>
+      <wsdl:input message="tns:ListUnsubscribersSoapIn" />
+      <wsdl:output message="tns:ListUnsubscribersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListSuppressedContacts">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieve a list of suppressed contacts along with the reason for suppression.You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListSuppressedContactsSoapIn" />
+      <wsdl:output message="tns:ListSuppressedContactsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateContact">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a contact</wsdl:documentation>
+      <wsdl:input message="tns:CreateContactSoapIn" />
+      <wsdl:output message="tns:CreateContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateDataField">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a contact data field</wsdl:documentation>
+      <wsdl:input message="tns:CreateDataFieldSoapIn" />
+      <wsdl:output message="tns:CreateDataFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDataField">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deletes a contact data field</wsdl:documentation>
+      <wsdl:input message="tns:DeleteDataFieldSoapIn" />
+      <wsdl:output message="tns:DeleteDataFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Updates an existing contact</wsdl:documentation>
+      <wsdl:input message="tns:UpdateContactSoapIn" />
+      <wsdl:output message="tns:UpdateContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContactToAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a contact to a given address book</wsdl:documentation>
+      <wsdl:input message="tns:AddContactToAddressBookSoapIn" />
+      <wsdl:output message="tns:AddContactToAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContactFromAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes or unsubscribes a contact from a given address book. If totalUnsubscribe is set to true, the contact will be completely removed from the account (you may wish to specify -1 as the addressbook ID in this case).</wsdl:documentation>
+      <wsdl:input message="tns:RemoveContactFromAddressBookSoapIn" />
+      <wsdl:output message="tns:RemoveContactFromAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAllContactsFromAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes all contacts from a given address book. If totalUnsubscribe is set to true, the contact will be completely removed from the account (you may wish to specify -1 as the addressbook ID in this case).</wsdl:documentation>
+      <wsdl:input message="tns:RemoveAllContactsFromAddressBookSoapIn" />
+      <wsdl:output message="tns:RemoveAllContactsFromAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByEmail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a contact using an email address</wsdl:documentation>
+      <wsdl:input message="tns:GetContactByEmailSoapIn" />
+      <wsdl:output message="tns:GetContactByEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a contact using the ID. Unsubscribed or suppressed contacts will not be retrieved.</wsdl:documentation>
+      <wsdl:input message="tns:GetContactByIdSoapIn" />
+      <wsdl:output message="tns:GetContactByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;strong&gt;Bulk creates, or bulk updates, contacts. Import format can either be CSV or Excel. Must include one column called &amp;quot;Email&amp;quot;. Any other columns will attempt to map to your custom data fields. Use this method to stay within your API limits.&lt;/strong&gt;</wsdl:documentation>
+      <wsdl:input message="tns:AddContactsToAddressBookSoapIn" />
+      <wsdl:output message="tns:AddContactsToAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBookWithProgress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;strong&gt;Bulk creates, or bulk updates, contacts. Import format can either be CSV or Excel. Must include one column called &amp;quot;Email&amp;quot;. Any other columns will attempt to map to your custom data fields. The returned token (a GUID) can be used to query import progress. Use this method to stay within your API limits.&lt;/strong&gt;</wsdl:documentation>
+      <wsdl:input message="tns:AddContactsToAddressBookWithProgressSoapIn" />
+      <wsdl:output message="tns:AddContactsToAddressBookWithProgressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportProgress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Determines the import status of a previously started contact import.</wsdl:documentation>
+      <wsdl:input message="tns:GetContactImportProgressSoapIn" />
+      <wsdl:output message="tns:GetContactImportProgressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSendProgress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Determines the send status using a token returned by SendCampaignToAddressBooksWithProgress.</wsdl:documentation>
+      <wsdl:input message="tns:GetCampaignSendProgressSoapIn" />
+      <wsdl:output message="tns:GetCampaignSendProgressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReport">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a report with statistics about what was successfully imported, and what was unable to be imported</wsdl:documentation>
+      <wsdl:input message="tns:GetContactImportReportSoapIn" />
+      <wsdl:output message="tns:GetContactImportReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReportFaults">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets all records that were not successfully imported. The data are returned in a base64 encoded CSV file, which is UTF-8 encoded. This data will only be available for approximately one week after import.</wsdl:documentation>
+      <wsdl:input message="tns:GetContactImportReportFaultsSoapIn" />
+      <wsdl:output message="tns:GetContactImportReportFaultsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">List all address books for the current account.</wsdl:documentation>
+      <wsdl:input message="tns:ListAddressBooksSoapIn" />
+      <wsdl:output message="tns:ListAddressBooksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListContactDataLabels">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a list of contact data labels in an account.</wsdl:documentation>
+      <wsdl:input message="tns:ListContactDataLabelsSoapIn" />
+      <wsdl:output message="tns:ListContactDataLabelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForContact">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists any address books that a contact is in.</wsdl:documentation>
+      <wsdl:input message="tns:ListAddressBooksForContactSoapIn" />
+      <wsdl:output message="tns:ListAddressBooksForContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForCampaign">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists any address books that a campaign has ever been sent to.</wsdl:documentation>
+      <wsdl:input message="tns:ListAddressBooksForCampaignSoapIn" />
+      <wsdl:output message="tns:ListAddressBooksForCampaignSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignsForAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists any campaigns that have been sent to an address book.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignsForAddressBookSoapIn" />
+      <wsdl:output message="tns:ListCampaignsForAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates an address book</wsdl:documentation>
+      <wsdl:input message="tns:CreateAddressBookSoapIn" />
+      <wsdl:output message="tns:CreateAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAddressBook">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deletes an address book</wsdl:documentation>
+      <wsdl:input message="tns:DeleteAddressBookSoapIn" />
+      <wsdl:output message="tns:DeleteAddressBookSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressBookContactCount">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the amount of contacts in a given address book.</wsdl:documentation>
+      <wsdl:input message="tns:GetAddressBookContactCountSoapIn" />
+      <wsdl:output message="tns:GetAddressBookContactCountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactReplies">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of campaign replies for a contact. You may not request more than 5 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactRepliesSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactRepliesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of campaign link clicks for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactClicksSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactClicksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of campaign link clicks for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactClicks2SoapIn" />
+      <wsdl:output message="tns:ListCampaignContactClicks2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactPageViews">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of page views for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactPageViewsSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactPageViewsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactOpens">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of campaign opens for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactOpensSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactOpensSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactRoiDetail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves a list of ROI information for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactRoiDetailSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactRoiDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignContactForwardInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves campaign forward or estimated forward information for a contact. Specify true using "getEstimated" to return estimated forwards.</wsdl:documentation>
+      <wsdl:input message="tns:GetCampaignContactForwardInfoSoapIn" />
+      <wsdl:output message="tns:GetCampaignContactForwardInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactSocialBookmarkViews">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves campaign social bookmark views for a contact. You may not request more than 1000 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignContactSocialBookmarkViewsSoapIn" />
+      <wsdl:output message="tns:ListCampaignContactSocialBookmarkViewsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists all campaigns for the current account. If you have over 500 campaigns, please use ListCampaigns2 instead. Please note that only the basic campaign data will be returned (not the content).</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaignsSoapIn" />
+      <wsdl:output message="tns:ListCampaignsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists all campaigns for the current account. You may not request more than 500 records at a time using the "select" parameter. Use the select and skip feature to retrieve all information.  Please note that only the basic campaign data will be returned (not the content).</wsdl:documentation>
+      <wsdl:input message="tns:ListCampaigns2SoapIn" />
+      <wsdl:output message="tns:ListCampaigns2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListAvailableCustomFromAddresses">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists available custom from addresses for the current account.</wsdl:documentation>
+      <wsdl:input message="tns:ListAvailableCustomFromAddressesSoapIn" />
+      <wsdl:output message="tns:ListAvailableCustomFromAddressesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCampaignCustomFromAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Changes the custom from address of a campaign.</wsdl:documentation>
+      <wsdl:input message="tns:SetCampaignCustomFromAddressSoapIn" />
+      <wsdl:output message="tns:SetCampaignCustomFromAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListSentCampaignsWithActivitySinceDate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Lists all sent campaigns, which have had activity after a specified date (e.g. clicks, opens).</wsdl:documentation>
+      <wsdl:input message="tns:ListSentCampaignsWithActivitySinceDateSoapIn" />
+      <wsdl:output message="tns:ListSentCampaignsWithActivitySinceDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaign">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a specified campaign.</wsdl:documentation>
+      <wsdl:input message="tns:GetCampaignSoapIn" />
+      <wsdl:output message="tns:GetCampaignSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsSplitTestCampaign">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indicates if the supplied campaign id is a split test campaign.</wsdl:documentation>
+      <wsdl:input message="tns:IsSplitTestCampaignSoapIn" />
+      <wsdl:output message="tns:IsSplitTestCampaignSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSummary">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a summary of reporting information for a specified campaign.</wsdl:documentation>
+      <wsdl:input message="tns:GetCampaignSummarySoapIn" />
+      <wsdl:output message="tns:GetCampaignSummarySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooks">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sends a specified campaign to one or more address books at a specified time. Leave the address book array empty to send to All Contacts.</wsdl:documentation>
+      <wsdl:input message="tns:SendCampaignToAddressBooksSoapIn" />
+      <wsdl:output message="tns:SendCampaignToAddressBooksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooksWithProgress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sends a specified campaign to one or more address books at a specified time. The returned token (a GUID) can be used to query send progress. Leave the address book array empty to send to All Contacts.</wsdl:documentation>
+      <wsdl:input message="tns:SendCampaignToAddressBooksWithProgressSoapIn" />
+      <wsdl:output message="tns:SendCampaignToAddressBooksWithProgressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSplitTestCampaignToAddressBookWithProgress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sends a specified split test campaign to one or more address books at a specified time. The returned token (a GUID) can be used to query send progress. Leave the address book array empty to send to All Contacts.</wsdl:documentation>
+      <wsdl:input message="tns:SendSplitTestCampaignToAddressBookWithProgressSoapIn" />
+      <wsdl:output message="tns:SendSplitTestCampaignToAddressBookWithProgressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToContact">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sends a campaign to a specified contact.</wsdl:documentation>
+      <wsdl:input message="tns:SendCampaignToContactSoapIn" />
+      <wsdl:output message="tns:SendCampaignToContactSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCampaign">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a campaign. Will be validated before saving.</wsdl:documentation>
+      <wsdl:input message="tns:CreateCampaignSoapIn" />
+      <wsdl:output message="tns:CreateCampaignSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCampaign">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Updates a given campaign. Will be validated before saving.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCampaignSoapIn" />
+      <wsdl:output message="tns:UpdateCampaignSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the UTC time as set on the server.</wsdl:documentation>
+      <wsdl:input message="tns:GetServerTimeSoapIn" />
+      <wsdl:output message="tns:GetServerTimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSingleSMSMessage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sends a single SMS message. Sufficient credit is required or this method will fail.</wsdl:documentation>
+      <wsdl:input message="tns:SendSingleSMSMessageSoapIn" />
+      <wsdl:output message="tns:SendSingleSMSMessageSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="APISoap" type="tns:APISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListContactsInAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/ListContactsInAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListContactsInAddressBookWithFullData">
+      <soap:operation soapAction="http://apiconnector.com/ListContactsInAddressBookWithFullData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts">
+      <soap:operation soapAction="http://apiconnector.com/ListModifiedContacts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribersAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/ListUnsubscribersAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts2">
+      <soap:operation soapAction="http://apiconnector.com/ListModifiedContacts2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListNewContacts">
+      <soap:operation soapAction="http://apiconnector.com/ListNewContacts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/ListModifiedContactsInAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook2">
+      <soap:operation soapAction="http://apiconnector.com/ListModifiedContactsInAddressBook2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContacts">
+      <soap:operation soapAction="http://apiconnector.com/ListHardBouncingContacts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncesContacts2">
+      <soap:operation soapAction="http://apiconnector.com/ListHardBouncesContacts2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels">
+      <soap:operation soapAction="http://apiconnector.com/ListHardBouncingContactsWithLabels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels2">
+      <soap:operation soapAction="http://apiconnector.com/ListHardBouncingContactsWithLabels2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivities">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignActivities" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignOpeners">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignOpeners" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignClickers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers2">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignClickers2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivitiesSinceDate">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignActivitiesSinceDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactActivity">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactActivity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribers">
+      <soap:operation soapAction="http://apiconnector.com/ListUnsubscribers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSuppressedContacts">
+      <soap:operation soapAction="http://apiconnector.com/ListSuppressedContacts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContact">
+      <soap:operation soapAction="http://apiconnector.com/CreateContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateDataField">
+      <soap:operation soapAction="http://apiconnector.com/CreateDataField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDataField">
+      <soap:operation soapAction="http://apiconnector.com/DeleteDataField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <soap:operation soapAction="http://apiconnector.com/UpdateContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactToAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/AddContactToAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContactFromAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/RemoveContactFromAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAllContactsFromAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/RemoveAllContactsFromAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByEmail">
+      <soap:operation soapAction="http://apiconnector.com/GetContactByEmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactById">
+      <soap:operation soapAction="http://apiconnector.com/GetContactById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/AddContactsToAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBookWithProgress">
+      <soap:operation soapAction="http://apiconnector.com/AddContactsToAddressBookWithProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportProgress">
+      <soap:operation soapAction="http://apiconnector.com/GetContactImportProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSendProgress">
+      <soap:operation soapAction="http://apiconnector.com/GetCampaignSendProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReport">
+      <soap:operation soapAction="http://apiconnector.com/GetContactImportReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReportFaults">
+      <soap:operation soapAction="http://apiconnector.com/GetContactImportReportFaults" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooks">
+      <soap:operation soapAction="http://apiconnector.com/ListAddressBooks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListContactDataLabels">
+      <soap:operation soapAction="http://apiconnector.com/ListContactDataLabels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForContact">
+      <soap:operation soapAction="http://apiconnector.com/ListAddressBooksForContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForCampaign">
+      <soap:operation soapAction="http://apiconnector.com/ListAddressBooksForCampaign" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignsForAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignsForAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/CreateAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAddressBook">
+      <soap:operation soapAction="http://apiconnector.com/DeleteAddressBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressBookContactCount">
+      <soap:operation soapAction="http://apiconnector.com/GetAddressBookContactCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactReplies">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactReplies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactClicks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks2">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactClicks2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactPageViews">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactPageViews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactOpens">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactOpens" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactRoiDetail">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactRoiDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignContactForwardInfo">
+      <soap:operation soapAction="http://apiconnector.com/GetCampaignContactForwardInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactSocialBookmarkViews">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaignContactSocialBookmarkViews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaigns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns2">
+      <soap:operation soapAction="http://apiconnector.com/ListCampaigns2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAvailableCustomFromAddresses">
+      <soap:operation soapAction="http://apiconnector.com/ListAvailableCustomFromAddresses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCampaignCustomFromAddress">
+      <soap:operation soapAction="http://apiconnector.com/SetCampaignCustomFromAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSentCampaignsWithActivitySinceDate">
+      <soap:operation soapAction="http://apiconnector.com/ListSentCampaignsWithActivitySinceDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaign">
+      <soap:operation soapAction="http://apiconnector.com/GetCampaign" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsSplitTestCampaign">
+      <soap:operation soapAction="http://apiconnector.com/IsSplitTestCampaign" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSummary">
+      <soap:operation soapAction="http://apiconnector.com/GetCampaignSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooks">
+      <soap:operation soapAction="http://apiconnector.com/SendCampaignToAddressBooks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooksWithProgress">
+      <soap:operation soapAction="http://apiconnector.com/SendCampaignToAddressBooksWithProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSplitTestCampaignToAddressBookWithProgress">
+      <soap:operation soapAction="http://apiconnector.com/SendSplitTestCampaignToAddressBookWithProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToContact">
+      <soap:operation soapAction="http://apiconnector.com/SendCampaignToContact" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCampaign">
+      <soap:operation soapAction="http://apiconnector.com/CreateCampaign" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCampaign">
+      <soap:operation soapAction="http://apiconnector.com/UpdateCampaign" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <soap:operation soapAction="http://apiconnector.com/GetServerTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSingleSMSMessage">
+      <soap:operation soapAction="http://apiconnector.com/SendSingleSMSMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="APISoap12" type="tns:APISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListContactsInAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/ListContactsInAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListContactsInAddressBookWithFullData">
+      <soap12:operation soapAction="http://apiconnector.com/ListContactsInAddressBookWithFullData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts">
+      <soap12:operation soapAction="http://apiconnector.com/ListModifiedContacts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribersAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/ListUnsubscribersAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContacts2">
+      <soap12:operation soapAction="http://apiconnector.com/ListModifiedContacts2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListNewContacts">
+      <soap12:operation soapAction="http://apiconnector.com/ListNewContacts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/ListModifiedContactsInAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListModifiedContactsInAddressBook2">
+      <soap12:operation soapAction="http://apiconnector.com/ListModifiedContactsInAddressBook2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContacts">
+      <soap12:operation soapAction="http://apiconnector.com/ListHardBouncingContacts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncesContacts2">
+      <soap12:operation soapAction="http://apiconnector.com/ListHardBouncesContacts2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels">
+      <soap12:operation soapAction="http://apiconnector.com/ListHardBouncingContactsWithLabels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListHardBouncingContactsWithLabels2">
+      <soap12:operation soapAction="http://apiconnector.com/ListHardBouncingContactsWithLabels2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivities">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignActivities" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignOpeners">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignOpeners" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignClickers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignClickers2">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignClickers2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignActivitiesSinceDate">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignActivitiesSinceDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactActivity">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactActivity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListUnsubscribers">
+      <soap12:operation soapAction="http://apiconnector.com/ListUnsubscribers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSuppressedContacts">
+      <soap12:operation soapAction="http://apiconnector.com/ListSuppressedContacts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContact">
+      <soap12:operation soapAction="http://apiconnector.com/CreateContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateDataField">
+      <soap12:operation soapAction="http://apiconnector.com/CreateDataField" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDataField">
+      <soap12:operation soapAction="http://apiconnector.com/DeleteDataField" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContact">
+      <soap12:operation soapAction="http://apiconnector.com/UpdateContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactToAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/AddContactToAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveContactFromAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/RemoveContactFromAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAllContactsFromAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/RemoveAllContactsFromAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactByEmail">
+      <soap12:operation soapAction="http://apiconnector.com/GetContactByEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactById">
+      <soap12:operation soapAction="http://apiconnector.com/GetContactById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/AddContactsToAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddContactsToAddressBookWithProgress">
+      <soap12:operation soapAction="http://apiconnector.com/AddContactsToAddressBookWithProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportProgress">
+      <soap12:operation soapAction="http://apiconnector.com/GetContactImportProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSendProgress">
+      <soap12:operation soapAction="http://apiconnector.com/GetCampaignSendProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReport">
+      <soap12:operation soapAction="http://apiconnector.com/GetContactImportReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContactImportReportFaults">
+      <soap12:operation soapAction="http://apiconnector.com/GetContactImportReportFaults" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooks">
+      <soap12:operation soapAction="http://apiconnector.com/ListAddressBooks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListContactDataLabels">
+      <soap12:operation soapAction="http://apiconnector.com/ListContactDataLabels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForContact">
+      <soap12:operation soapAction="http://apiconnector.com/ListAddressBooksForContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAddressBooksForCampaign">
+      <soap12:operation soapAction="http://apiconnector.com/ListAddressBooksForCampaign" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignsForAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignsForAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/CreateAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAddressBook">
+      <soap12:operation soapAction="http://apiconnector.com/DeleteAddressBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressBookContactCount">
+      <soap12:operation soapAction="http://apiconnector.com/GetAddressBookContactCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactReplies">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactReplies" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactClicks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactClicks2">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactClicks2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactPageViews">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactPageViews" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactOpens">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactOpens" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactRoiDetail">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactRoiDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignContactForwardInfo">
+      <soap12:operation soapAction="http://apiconnector.com/GetCampaignContactForwardInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaignContactSocialBookmarkViews">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaignContactSocialBookmarkViews" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaigns" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListCampaigns2">
+      <soap12:operation soapAction="http://apiconnector.com/ListCampaigns2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListAvailableCustomFromAddresses">
+      <soap12:operation soapAction="http://apiconnector.com/ListAvailableCustomFromAddresses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCampaignCustomFromAddress">
+      <soap12:operation soapAction="http://apiconnector.com/SetCampaignCustomFromAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSentCampaignsWithActivitySinceDate">
+      <soap12:operation soapAction="http://apiconnector.com/ListSentCampaignsWithActivitySinceDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaign">
+      <soap12:operation soapAction="http://apiconnector.com/GetCampaign" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsSplitTestCampaign">
+      <soap12:operation soapAction="http://apiconnector.com/IsSplitTestCampaign" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampaignSummary">
+      <soap12:operation soapAction="http://apiconnector.com/GetCampaignSummary" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooks">
+      <soap12:operation soapAction="http://apiconnector.com/SendCampaignToAddressBooks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToAddressBooksWithProgress">
+      <soap12:operation soapAction="http://apiconnector.com/SendCampaignToAddressBooksWithProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSplitTestCampaignToAddressBookWithProgress">
+      <soap12:operation soapAction="http://apiconnector.com/SendSplitTestCampaignToAddressBookWithProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendCampaignToContact">
+      <soap12:operation soapAction="http://apiconnector.com/SendCampaignToContact" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCampaign">
+      <soap12:operation soapAction="http://apiconnector.com/CreateCampaign" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCampaign">
+      <soap12:operation soapAction="http://apiconnector.com/UpdateCampaign" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerTime">
+      <soap12:operation soapAction="http://apiconnector.com/GetServerTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSingleSMSMessage">
+      <soap12:operation soapAction="http://apiconnector.com/SendSingleSMSMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="API">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;p&gt;APIConnector for integration with our email marketing system&lt;/p&gt;&lt;li&gt;You may only access this system when the account you are using has been granted API permission.&lt;/li&gt;&lt;li&gt;Furthermore, you may not use your main account - a separate login must be created within your account, for use with the API.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;All datetime parameters are expected to be in UTC, and datetimes will be returned in UTC&lt;/strong&gt;. Please call GetServerTime if in doubt.&lt;/li&gt;</wsdl:documentation>
+    <wsdl:port name="APISoap" binding="tns:APISoap">
+      <soap:address location="http://apiconnector.com/API.asmx" />
+    </wsdl:port>
+    <wsdl:port name="APISoap12" binding="tns:APISoap12">
+      <soap12:address location="http://apiconnector.com/API.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
