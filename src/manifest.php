@@ -82,6 +82,10 @@ $installdefs = array (
       'from' => '<basepath>/SugarModules/modules/IB_DMContactUpdater',
       'to' => 'modules/IB_DMContactUpdater',
     ),
+    1 => array (
+      'from' => '<basepath>/SugarModules/custom/modules/IB_DMContactUpdater',
+      'to' => 'custom/modules/IB_DMContactUpdater',
+    )
   ),
   'language' => 
   array (
