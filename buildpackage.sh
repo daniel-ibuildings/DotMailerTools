@@ -10,7 +10,7 @@
 #
 ##############################################################################
 
-PACKAGE="TestPackage"
+PACKAGE="IB_DotMailerTools"
 SRCDIR="src"
 BUILDDIR="build"
 STAMP=`date '+%Y%m%d%H%M%S'`

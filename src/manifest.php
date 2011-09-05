@@ -77,15 +77,19 @@ $installdefs = array (
   'image_dir' => '<basepath>/icons',
   'copy' => 
   array (
-    0 => 
     array (
       'from' => '<basepath>/SugarModules/modules/IB_DMContactUpdater',
       'to' => 'modules/IB_DMContactUpdater',
     ),
-    1 => array (
+    array (
       'from' => '<basepath>/SugarModules/custom/modules/IB_DMContactUpdater',
       'to' => 'custom/modules/IB_DMContactUpdater',
+    ),
+    array (
+      'from' => '<basepath>/include',
+      'to' => 'custom/modules/IB_DMContactUpdater/include',
     )
+
   ),
   'language' => 
   array (
