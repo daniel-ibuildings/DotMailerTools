@@ -9,7 +9,6 @@ class DMContactTest extends PHPUnit_Framework_TestCase
         $this->dataMap['firstName'] = array('soap' => 'FIRSTNAME', 'sugar' => 'first_name');
         $this->dataMap['fullName']  = array('soap' => 'FULLNAME',  'sugar' => 'name');
         $this->dataMap['lastName']  = array('soap' => 'LASTNAME',  'sugar' => 'last_name');
-//        $this->dataMap['optIn']     = array('soap' => 'OptInType', 'sugar' => 'email_opt_out');
 
         $this->contact = new DMContact();
     }
@@ -25,7 +24,7 @@ class DMContactTest extends PHPUnit_Framework_TestCase
         $response = unserialize(file_get_contents(__DIR__ . '/fixtures/dotMailerContact'));
 
         $this->contact->initFromSoap($this->dataMap, $response->GetContactByEmailResult);
-//var_dump($this->contact);
+
         $this->assertEquals('275789931', $this->contact->id);
         $this->assertEquals('im.sugar.section@example.tw', $this->contact->email);
         $this->assertEquals('Janelle', $this->contact->firstName);
@@ -39,7 +38,7 @@ class DMContactTest extends PHPUnit_Framework_TestCase
         $bean = (object) unserialize(file_get_contents(__DIR__ . '/fixtures/sugarContact'));
 
         $this->contact->initFromSugarBean($this->dataMap, $bean);
-//var_dump($this->contact);
+
         $this->assertEquals('bf9bc1c6-dc81-1115-1fe0-4e54d12e8f15', $this->contact->id);
         $this->assertEquals('im.sugar.section@example.tw', $this->contact->email);
         $this->assertEquals('Janelle', $this->contact->firstName);
@@ -71,5 +70,18 @@ class DMContactTest extends PHPUnit_Framework_TestCase
         $anotherContact->initFromSugarBean($this->dataMap, $bean);
 
         $this->assertFalse($this->contact->compare($anotherContact));
+    }
+
+    public function testContactReturnsItselfAsASoapParamater()
+    {
+        $bean = (object) unserialize(file_get_contents(__DIR__ . '/fixtures/sugarContact'));
+
+        $this->contact->initFromSugarBean($this->dataMap, $bean);
+
+        $soapParam = $this->contact->getAsSoapParam($this->dataMap);
+
+        $this->assertTrue(is_array($soapParam['DataFields']));
+
+        var_dump($soapParam);
     }
 }

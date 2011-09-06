@@ -2,6 +2,15 @@
 
 class DMContact
 {
+    private $defaultDotMailerFields = array(
+        'ID',
+        'Email',
+        'AudienceType',
+        'OptInType',
+        'EmailType',
+        'Notes'
+    );
+
     private function appendDefaultFields($dataMap)
     {
         $dataMap['id'] = array('soap' => 'ID', 'sugar' => 'id');
@@ -54,5 +63,42 @@ class DMContact
     public function compare(DMContact $contact)
     {
         return $this->getComparableArray() == $contact->getComparableArray();
+    }
+
+    public function getAsSoapParam($dataMap)
+    {
+        $self = get_object_vars($this);
+
+        $soapParam = array();
+        $soapParam['OptInType'] = $self['optIn'] ? 'Single' : 'Unknown';
+
+        $dataFields = array();
+
+        unset($self['defaultDotMailerFields'], $self['id'], $self['optIn']);
+
+        foreach ($self as $property => $value) {
+
+            $propertyName = isset($dataMap[$property]) ? $dataMap[$property]['soap'] : $property;
+
+            if (!in_array($propertyName, $this->defaultDotMailerFields)) {
+                $dataFields[$propertyName] = $value;
+            } else {
+                $soapParam[$propertyName] = $value;
+            }
+        }
+
+        if (!empty($dataFields)) {
+            $soapParam['DataFields'] = array();
+            $soapParam['DataFields']['Keys'] = array();
+            $soapParam['DataFields']['Values'] = array();
+
+            foreach ($dataFields as $property => $value) {
+                $soapParam['DataFields']['Keys'][] = strtoupper($property);
+                $soapParam['DataFields']['Values'][] =
+                    new SoapVar($value, XSD_STRING, 'string', 'http://www.w3.org/2001/XMLSchema');
+            }
+        }
+
+        return $soapParam;
     }
 }
