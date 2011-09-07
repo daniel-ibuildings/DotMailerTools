@@ -4,6 +4,8 @@ require_once __DIR__ . '/DMContact.php';
 
 class ContactNotFoundException extends Exception { }
 class InvalidCredentialsException extends Exception { }
+class FailedUpdateException extends Exception { }
+class FailedCreateException extends Exception { }
 
 class DMSoapException {
     public static function factory(Exception $e)
@@ -24,12 +26,8 @@ class DMClient
     private $username;
     private $password;
 
-    public function __construct($soapClient, $username, $password)
+    public function __construct(SoapClient $soapClient, $username, $password)
     {
-        if (!$soapClient instanceof SoapClient) {
-            throw new InvalidArgumentException;
-        }
-
         if (empty($username)) {
             throw new InvalidArgumentException;
         }
@@ -43,7 +41,7 @@ class DMClient
         $this->password = $password;
     }
 
-    private function getParam($params = array()) {
+    private function getParams($params = array()) {
         $params['username'] = $this->username;
         $params['password'] = $this->password;
         return $params;
@@ -55,7 +53,7 @@ class DMClient
             throw new InvalidArgumentException;
         }
 
-        $params = $this->getParam(array('email' => $email));
+        $params = $this->getParams(array('email' => $email));
 
         try {
             $response = $this->soapClient->getContactByEmail($params);
@@ -63,9 +61,35 @@ class DMClient
             DMSoapException::factory($e);
         }
 
-        $contact = new DMContact();
-        $contact->initFromSoap(array(), $response->GetContactByEmailResult);
+        return $response->GetContactByEmailResult;
+    }
+    
+    public function updateContact($id, DMContact $contact)
+    {
+        if (empty($id) || !is_int((int) $id)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $params = $this->getParams();
+        $params['contact'] = $contact->toSoapParam();
+        $params['contact']['ID'] = $id;
+        
+        try {
+            $this->soapClient->UpdateContact($params);
+        } catch (SoapFault $e) {
+            throw new FailedUpdateException;
+        }
 
-        return $contact;
+        return true;
+    }
+    
+    public function createContact(DMContact $contact)
+    {
+        try {
+            $this->soapClient->CreateContact($params);
+        } catch (SoapFault $e) {
+            throw new FailedCreateException;
+        }
+        return true;
     }
 }

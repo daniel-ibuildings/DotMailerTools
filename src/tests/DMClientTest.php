@@ -17,7 +17,7 @@ class DMClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException PHPUnit_Framework_Error 
      */
     public function testDMClientRequiresASoapClientInstance()
     {
@@ -29,7 +29,7 @@ class DMClientTest extends PHPUnit_Framework_TestCase
      */
     public function testDMClientRequiresUsername()
     {
-        $client = new DMClient(new StdClass, '', '');
+        $client = new DMClient(new SoapClient($this->wsdl), '', '');
     }
 
     /**
@@ -37,7 +37,7 @@ class DMClientTest extends PHPUnit_Framework_TestCase
      */
     public function testDMClientRequiresPassword()
     {
-        $client = new DMClient(new StdClass, 'username', '');
+        $client = new DMClient(new SoapClient($this->wsdl), 'username', '');
     }
 
     /**
@@ -95,6 +95,139 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $client = new DMClient($dotMailerClient, 'username', 'password');
         $contact = $client->getContactByEmail('valid@address.com');
 
-        $this->assertInstanceOf('DMContact', $contact);
+        $this->assertInstanceOf('stdClass', $contact);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException 
+     */
+    public function testUpdateContactAcceptsAValidId()
+    {
+        $contact = $this->getMock('DMContact', null, array(array()));
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'UpdateContactRequiresAnId');
+        
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->updateContact('', $contact);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error 
+     */
+    public function testUpdateContactAcceptsParamTypeOfDMContact()
+    {
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'UpdateContact');
+        
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->updateContact(123, new stdClass);
+    }
+
+    public function testUpdateContactAppendsIdToParams()
+    {
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+        
+        $params = array();
+        $params['username'] = 'username';
+        $params['password'] = 'password';
+        $params['contact']  = $contact->toSoapParam(array());
+        $params['contact']['ID'] = 123;
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'UpdateContactAppendsIdToParam');
+        $dotMailerClient->expects($this->once())
+                        ->method('UpdateContact')
+                        ->with($this->equalTo($params));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->updateContact(123, $contact);
+    }
+
+    public function testUpdateContactSuccessful()
+    {
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'UpdateContactSuccess');
+        $dotMailerClient->expects($this->once())
+                        ->method('UpdateContact')
+                        ->will($this->returnValue(new stdClass));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        
+        $this->assertTrue($client->updateContact(123, $contact));
+    }
+
+    /**
+     * @expectedException FailedUpdateException
+     */
+    public function testUpdateContactFails()
+    {
+        $exception = new SoapFault('soap:Server', 'Failed to update contact');
+        
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'UpdateContactFailed');
+        $dotMailerClient->expects($this->any())
+                        ->method('UpdateContact')
+                        ->will($this->throwException($exception));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->updateContact(123, $contact);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error 
+     */
+    public function testCreatContactAcceptsParamTypeOfDMContact()
+    {
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContact');
+        
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->createContact(new stdClass);
+    }
+
+    public function testCreateContactSuccessful()
+    {
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContactSuccess');
+        $dotMailerClient->expects($this->once())
+                        ->method('CreateContact')
+                        ->will($this->returnValue(new stdClass));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        
+        $this->assertTrue($client->createContact($contact));
+    }
+
+    /**
+     * @expectedException FailedCreateException
+     */
+    public function testCreateContactFails()
+    {
+        $exception = new SoapFault('soap:Server', 'Failed to create contact');
+        
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContactFailed');
+        $dotMailerClient->expects($this->any())
+                        ->method('CreateContact')
+                        ->will($this->throwException($exception));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->createContact($contact);
     }
 }

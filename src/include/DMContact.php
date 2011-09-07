@@ -2,6 +2,8 @@
 
 class DMContact
 {
+    private $dataMap;
+    
     private $defaultDotMailerFields = array(
         'ID',
         'Email',
@@ -10,6 +12,11 @@ class DMContact
         'EmailType',
         'Notes'
     );
+    
+    public function __construct($dataMap)
+    {
+        $this->dataMap = $this->appendDefaultFields($dataMap);
+    }
 
     private function appendDefaultFields($dataMap)
     {
@@ -17,11 +24,9 @@ class DMContact
         return $dataMap;
     }
 
-    public function initFromSoap($dataMap, $result)
+    public function initFromSoap($result)
     {
-        $dataMap = $this->appendDefaultFields($dataMap);
-
-        foreach ($dataMap as $property => $keys) {
+        foreach ($this->dataMap as $property => $keys) {
             if (isset($result->$keys['soap'])) {
                 $this->$property = $result->$keys['soap'];
                 continue;
@@ -41,11 +46,9 @@ class DMContact
         $this->optIn = $result->OptInType !== 'Unknown' ? true : false;
     }
 
-    public function initFromSugarBean($dataMap, $bean)
+    public function initFromSugarBean($bean)
     {
-        $dataMap = $this->appendDefaultFields($dataMap);
-
-        foreach ($dataMap as $property => $keys) {
+        foreach ($this->dataMap as $property => $keys) {
             if (isset($bean->$keys['sugar'])) {
                 $this->$property = $bean->$keys['sugar'];
             }
@@ -65,7 +68,7 @@ class DMContact
         return $this->getComparableArray() == $contact->getComparableArray();
     }
 
-    public function getAsSoapParam($dataMap)
+    public function toSoapParam()
     {
         $self = get_object_vars($this);
 
@@ -77,8 +80,7 @@ class DMContact
         unset($self['defaultDotMailerFields'], $self['id'], $self['optIn']);
 
         foreach ($self as $property => $value) {
-
-            $propertyName = isset($dataMap[$property]) ? $dataMap[$property]['soap'] : $property;
+            $propertyName = isset($this->dataMap[$property]) ? $this->dataMap[$property]['soap'] : $property;
 
             if (!in_array($propertyName, $this->defaultDotMailerFields)) {
                 $dataFields[$propertyName] = $value;
