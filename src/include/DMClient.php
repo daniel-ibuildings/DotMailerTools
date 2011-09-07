@@ -69,7 +69,7 @@ class DMClient
         if (empty($id) || !is_int((int) $id)) {
             throw new InvalidArgumentException;
         }
-        
+
         $params = $this->getParams();
         $params['contact'] = $contact->toSoapParam();
         $params['contact']['ID'] = $id;
@@ -82,9 +82,13 @@ class DMClient
 
         return true;
     }
-    
+
     public function createContact(DMContact $contact)
     {
+        $params = $this->getParams();
+        $params['contact'] = $contact->toSoapParam();
+        $params['contact']['ID'] = '-1';
+
         try {
             $this->soapClient->CreateContact($params);
         } catch (SoapFault $e) {

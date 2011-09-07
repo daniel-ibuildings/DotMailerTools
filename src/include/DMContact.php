@@ -72,12 +72,17 @@ class DMContact
     {
         $self = get_object_vars($this);
 
-        $soapParam = array();
+        $dataFields = $soapParam = array();
         $soapParam['OptInType'] = $self['optIn'] ? 'Single' : 'Unknown';
+        $soapParam['AudienceType'] = 'Unknown';
+        $soapParam['EmailType'] = 'Html';
 
-        $dataFields = array();
-
-        unset($self['defaultDotMailerFields'], $self['id'], $self['optIn']);
+        unset(
+            $self['dataMap'],
+            $self['defaultDotMailerFields'],
+            $self['id'], 
+            $self['optIn']
+        );
 
         foreach ($self as $property => $value) {
             $propertyName = isset($this->dataMap[$property]) ? $this->dataMap[$property]['soap'] : $property;

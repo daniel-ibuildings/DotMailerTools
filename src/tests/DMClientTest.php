@@ -193,6 +193,28 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $client->createContact(new stdClass);
     }
 
+    public function testCreateContactAddsDataToParams()
+    {
+        $contact = $this->getMock('DMContact', null, array(array()));
+        $contact->expects($this->any())
+                ->method('toSoapParam')
+                ->will($this->returnValue(array()));
+        
+        $params = array();
+        $params['username'] = 'username';
+        $params['password'] = 'password';
+        $params['contact']  = $contact->toSoapParam(array());
+        $params['contact']['ID'] = '-1';
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContactAddsDataToParams');
+        $dotMailerClient->expects($this->once())
+                        ->method('CreateContact')
+                        ->with($this->equalTo($params));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+        $client->createContact($contact);
+    }
+
     public function testCreateContactSuccessful()
     {
         $contact = $this->getMock('DMContact', null, array(array()));
