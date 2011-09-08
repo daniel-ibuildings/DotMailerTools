@@ -74,12 +74,7 @@ class DMContactTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->contact->compare($anotherContact));
     }
-    
-    public function testToSoapParamReturnsCorrectSoapParams()
-    {
-        
-    }
-    
+
     public function testContactReturnsItselfAsASoapParamater()
     {
         $bean = (object) unserialize(file_get_contents(__DIR__ . '/fixtures/sugarContact'));

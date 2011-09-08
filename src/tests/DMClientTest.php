@@ -199,13 +199,13 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $contact->expects($this->any())
                 ->method('toSoapParam')
                 ->will($this->returnValue(array()));
-        
+
         $params = array();
         $params['username'] = 'username';
         $params['password'] = 'password';
         $params['contact']  = $contact->toSoapParam(array());
         $params['contact']['ID'] = '-1';
-        
+
         $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContactAddsDataToParams');
         $dotMailerClient->expects($this->once())
                         ->method('CreateContact')
@@ -221,7 +221,7 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $contact->expects($this->any())
                 ->method('toSoapParam')
                 ->will($this->returnValue(array()));
-        
+
         $dotMailerClient = $this->getMockFromWsdl($this->wsdl, 'CreateContactSuccess');
         $dotMailerClient->expects($this->once())
                         ->method('CreateContact')
@@ -238,7 +238,7 @@ class DMClientTest extends PHPUnit_Framework_TestCase
     public function testCreateContactFails()
     {
         $exception = new SoapFault('soap:Server', 'Failed to create contact');
-        
+
         $contact = $this->getMock('DMContact', null, array(array()));
         $contact->expects($this->any())
                 ->method('toSoapParam')
