@@ -17,7 +17,7 @@ class IB_DMContactUpdaterController extends SugarController
         $bean = new Contact();
         $bean->retrieve($id);
         $bean->fill_in_additional_list_fields();
-        
+
         // Init DMContact
         $dataMap = array();
         $dataMap['email']     = array('soap' => 'Email',     'sugar' => 'email1');
@@ -27,11 +27,11 @@ class IB_DMContactUpdaterController extends SugarController
 
         $contact = new DMContact($dataMap);
         $contact->initFromSugarBean($bean);
-        
+
         $client = new DMClient(new SoapClient($wsdl), $username, $password);
-        
+
         try {
-            $client->updateContact($contact);
+            $client->syncContact($contact);
         } catch (Exception $e) {
             var_dump($e);
         }

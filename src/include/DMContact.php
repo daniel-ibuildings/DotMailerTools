@@ -3,7 +3,6 @@
 class DMContact
 {
     private $dataMap;
-    
     private $defaultDotMailerFields = array(
         'ID',
         'Email',
@@ -12,7 +11,7 @@ class DMContact
         'EmailType',
         'Notes'
     );
-    
+
     public function __construct($dataMap)
     {
         $this->dataMap = $this->appendDefaultFields($dataMap);
@@ -44,6 +43,8 @@ class DMContact
         }
 
         $this->optIn = $result->OptInType !== 'Unknown' ? true : false;
+        $this->audienceType = $result->AudienceType;
+        $this->emailType = $result->EmailType;
     }
 
     public function initFromSugarBean($bean)
@@ -60,6 +61,8 @@ class DMContact
     public function getComparableArray() {
         $self = get_object_vars($this);
         unset($self['id']);
+        unset($self['audienceType']);
+        unset($self['emailType']);
         return $self;
     }
 
@@ -74,15 +77,13 @@ class DMContact
 
         $dataFields = $soapParam = array();
         $soapParam['OptInType'] = $self['optIn'] ? 'Single' : 'Unknown';
-        $soapParam['AudienceType'] = 'Unknown';
-        $soapParam['EmailType'] = 'Html';
+        $soapParam['AudienceType'] = isset($self['audienceType']) ? $self['audienceType'] : 'Unknown';
+        $soapParam['EmailType'] = isset($self['emailType']) ? $self['emailType'] : 'Html';
 
-        unset(
-            $self['dataMap'],
-            $self['defaultDotMailerFields'],
-            $self['id'], 
-            $self['optIn']
-        );
+        unset($self['dataMap']);
+        unset($self['defaultDotMailerFields']);
+        unset($self['id']);
+        unset($self['optIn']);
 
         foreach ($self as $property => $value) {
             $propertyName = isset($this->dataMap[$property]) ? $this->dataMap[$property]['soap'] : $property;

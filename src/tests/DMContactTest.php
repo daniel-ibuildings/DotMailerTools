@@ -83,6 +83,9 @@ class DMContactTest extends PHPUnit_Framework_TestCase
 
         $soapParam = $this->contact->toSoapParam();
 
+        $this->assertTrue(array_key_exists('OptInType', $soapParam));
+        $this->assertTrue(array_key_exists('AudienceType', $soapParam));
+        $this->assertTrue(array_key_exists('EmailType', $soapParam));
         $this->assertTrue(is_array($soapParam['DataFields']));
     }
 }

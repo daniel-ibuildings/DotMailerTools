@@ -63,7 +63,7 @@ class DMClient
 
         return $response->GetContactByEmailResult;
     }
-    
+
     public function updateContact($id, DMContact $contact)
     {
         if (empty($id) || !is_int((int) $id)) {
@@ -73,7 +73,7 @@ class DMClient
         $params = $this->getParams();
         $params['contact'] = $contact->toSoapParam();
         $params['contact']['ID'] = $id;
-        
+
         try {
             $this->soapClient->UpdateContact($params);
         } catch (SoapFault $e) {
@@ -94,6 +94,29 @@ class DMClient
         } catch (SoapFault $e) {
             throw new FailedCreateException;
         }
+
+        return true;
+    }
+
+    public function syncContact(DMContact $contact)
+    {
+        try {
+            $response = $this->getContactByEmail($contact->email);
+            $dmContact = new DMContact(array());
+            $dmContact->initFromSoap($response);
+        } catch(ContactNotFoundException $e) {
+            // Expected exception, do nothing...
+        }
+
+        if (isset($dmContact)) {
+            $contact->emailType = $dmContact->emailType;
+            $contact->audienceType = $dmContact->audienceType;
+
+            $this->updateContact($dmContact->id, $contact);
+        } else {
+            $this->createContact($contact);
+        }
+
         return true;
     }
 }
