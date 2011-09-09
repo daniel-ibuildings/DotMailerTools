@@ -2,12 +2,39 @@
 
 require_once __DIR__ . '/DMContact.php';
 
-class ContactNotFoundException extends Exception { }
-class InvalidCredentialsException extends Exception { }
-class FailedUpdateException extends Exception { }
-class FailedCreateException extends Exception { }
+/**
+ *
+ */
+class ContactNotFoundException extends Exception
+{
+}
 
-class DMSoapException {
+/**
+ *
+ */
+class InvalidCredentialsException extends Exception
+{
+}
+
+/**
+ *
+ */
+class FailedUpdateException extends Exception
+{
+}
+
+/**
+ *
+ */
+class FailedCreateException extends Exception
+{
+}
+
+/**
+ *
+ */
+class DMSoapException
+{
     public static function factory(Exception $e)
     {
         if (strpos($e, 'ERROR_CONTACT_NOT_FOUND') !== false) {
@@ -20,12 +47,18 @@ class DMSoapException {
     }
 }
 
+/**
+ *
+ */
 class DMClient
 {
-    private $soapClient;
-    private $username;
-    private $password;
+    private $_soapClient;
+    private $_username;
+    private $_password;
 
+    /**
+     *
+     */
     public function __construct(SoapClient $soapClient, $username, $password)
     {
         if (empty($username)) {
@@ -36,17 +69,24 @@ class DMClient
             throw new InvalidArgumentException;
         }
 
-        $this->soapClient = $soapClient;
-        $this->username = $username;
-        $this->password = $password;
+        $this->_soapClient = $soapClient;
+        $this->_username = $username;
+        $this->_password = $password;
     }
 
-    private function getParams($params = array()) {
-        $params['username'] = $this->username;
-        $params['password'] = $this->password;
+    /**
+     *
+     */
+    private function getParams($params = array())
+    {
+        $params['username'] = $this->_username;
+        $params['password'] = $this->_password;
         return $params;
     }
 
+    /**
+     *
+     */
     public function getContactByEmail($email)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -56,14 +96,19 @@ class DMClient
         $params = $this->getParams(array('email' => $email));
 
         try {
-            $response = $this->soapClient->getContactByEmail($params);
+            $result = $this->_soapClient
+                            ->getContactByEmail($params)
+                            ->GetContactByEmailResult;
         } catch (SoapFault $e) {
             DMSoapException::factory($e);
         }
 
-        return $response->GetContactByEmailResult;
+        return $result;
     }
 
+    /**
+     *
+     */
     public function updateContact($id, DMContact $contact)
     {
         if (empty($id) || !is_int((int) $id)) {
@@ -75,7 +120,7 @@ class DMClient
         $params['contact']['ID'] = $id;
 
         try {
-            $this->soapClient->UpdateContact($params);
+            $this->_soapClient->UpdateContact($params);
         } catch (SoapFault $e) {
             throw new FailedUpdateException;
         }
@@ -83,6 +128,9 @@ class DMClient
         return true;
     }
 
+    /**
+     *
+     */
     public function createContact(DMContact $contact)
     {
         $params = $this->getParams();
@@ -90,7 +138,7 @@ class DMClient
         $params['contact']['ID'] = '-1';
 
         try {
-            $this->soapClient->CreateContact($params);
+            $this->_soapClient->CreateContact($params);
         } catch (SoapFault $e) {
             throw new FailedCreateException;
         }
@@ -98,6 +146,9 @@ class DMClient
         return true;
     }
 
+    /**
+     *
+     */
     public function syncContact(DMContact $contact)
     {
         try {
