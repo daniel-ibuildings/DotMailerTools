@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/DMContact.php';
+require_once __DIR__ . '/DMSuppressionContact.php';
 
 /**
  *
@@ -27,6 +28,13 @@ class FailedUpdateException extends Exception
  *
  */
 class FailedCreateException extends Exception
+{
+}
+
+/**
+ *
+ */
+class FailedToFetchContactsException extends Exception
 {
 }
 
@@ -152,8 +160,8 @@ class DMClient
     public function syncContact(DMContact $contact)
     {
         try {
-            $response = $this->getContactByEmail($contact->email);
-            $dmContact = new DMContact(array());
+            $response  = $this->getContactByEmail($contact->email);
+            $dmContact = $this->getContact();
             $dmContact->initFromSoap($response);
         } catch(ContactNotFoundException $e) {
             // Expected exception, do nothing...
@@ -169,5 +177,29 @@ class DMClient
         }
 
         return true;
+    }
+
+    public function getSuppressionList($startDate, $select=100, $skip=0)
+    {
+        if (empty($startDate)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $params = $this->getParams();
+        $params['startDate'] = $startDate;
+        $params['select'] = $select;
+        $params['skip'] = $skip;
+        
+        try {
+            $contacts = $this->_soapClient->ListSuppressedContacts($params);
+        } catch (SoapFault $e) {
+            throw new FailedToFetchContactsException;
+        }
+        return $contacts;
+    }
+    
+    public function getContact()
+    {
+        return new DmContact(array());
     }
 }

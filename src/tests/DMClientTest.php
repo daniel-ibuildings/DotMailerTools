@@ -397,4 +397,48 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $client = new DMClient($soapMock, 'username', 'password');
         $client->syncContact($contact);
     }
+    /**
+     * @expectedException InvalidArgumentException 
+     */
+    public function testGetSuppressionListAcceptsAValidStartDate()
+    {
+        $soapMock = $this->getMockFromWsdl($this->_wsdl, 'GetSuppressionListRequiresStartDate');
+        
+        $client = new DMClient($soapMock, 'username', 'password');
+        $client->GetSuppressionList('');
+    }
+
+    public function testGetSuppressionListSuccessful()
+    {
+        $startDate = '2011-09-01T12:00:00';
+
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'SuppressionList');
+        $dotMailerClient->expects($this->once())
+                        ->method('ListSuppressedContacts')
+                        ->will($this->returnValue(new stdClass));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+
+        $contacts = $client->getSuppressionList($startDate);
+
+        $this->assertInstanceOf('stdClass',$contacts);
+    }
+
+    /**
+     * @expectedException FailedToFetchContactsException
+     */
+    public function testGetSuppressionListFails()
+    {
+        $startDate = '2011-09-01T12:00:00';
+
+        $exception = new SoapFault('soap:Server', 'Failed to fetch suppression contacts');
+
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'SuppressionListFailed');
+        $dotMailerClient->expects($this->any())
+                        ->method('ListSuppressedContacts')
+                        ->will($this->throwException($exception));
+
+        $client   = new DMClient($dotMailerClient, 'username', 'password');
+        $contacts = $client->getSuppressionList($startDate);
+    }
 }

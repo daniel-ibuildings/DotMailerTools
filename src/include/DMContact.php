@@ -49,33 +49,31 @@ class DMContact
             }
 
             $dataFields = $result->DataFields;
-            $keys = $dataFields->Keys;
-            $values = $dataFields->Values;
+            $dataKeys = $dataFields->Keys;
+            $dataValues = $dataFields->Values;
+            
             // @codingStandardsIgnoreEnd
 
-            $index = array_search($keys['soap'], $keys->string);
+            $index = array_search($keys['soap'], $dataKeys->string);
             if ($index) {
-                $this->$property = $values->anyType[$index];
+                $this->$property = $dataValues->anyType[$index];
             }
         }
 
         // @codingStandardsIgnoreStart
+        $this->optIn = false;
         if (isset($result->OptInType) && $result->OptInType !== 'Unknown') {
             $this->optIn = true;
-        } else {
-            $this->optIn = false;
         }
 
+        $this->audienceType = null;
         if (isset($result->AudienceType)) {
             $this->audienceType = $result->AudienceType;
-        } else {
-            $this->audienceType = null;
         }
 
+        $this->emailType = null;
         if (isset($result->EmailType)) {
             $this->emailType = $result->EmailType;
-        } else {
-            $this->emailType = null;
         }
         // @codingStandardsIgnoreEnd
     }
@@ -124,23 +122,20 @@ class DMContact
         $self = get_object_vars($this);
 
         $soapParam = array();
-
+        
+        $soapParam['OptInType'] = 'Unknown';
         if (isset($self['optIn']) && $self['optIn']) {
             $soapParam['OptInType'] = 'Single';
-        } else {
-            $soapParam['OptInType'] = 'Unknown';
         }
 
+        $soapParam['AudienceType'] = 'Unknown';
         if (isset($self['audienceType'])) {
             $soapParam['AudienceType'] = $self['audienceType'];
-        } else {
-            $soapParam['AudienceType'] = 'Unknown';
         }
 
+        $soapParam['EmailType'] = 'Html';
         if (isset($self['emailType'])) {
             $soapParam['EmailType'] = $self['emailType'];
-        } else {
-            $soapParam['EmailType'] = 'Html';
         }
 
         $dataFields = array();
@@ -153,12 +148,12 @@ class DMContact
         unset($self['emailType']);
 
         foreach ($self as $property => $value) {
+
+            $propertyName = $property;
             if (isset($this->_dataMap[$property])) {
                 $propertyName = $this->_dataMap[$property]['soap'];
-            } else {
-                $propertyName = $property;
             }
-
+            
             if (!in_array($propertyName, $this->_defaultDotMailerFields)) {
                 $dataFields[$propertyName] = $value;
             } else {
