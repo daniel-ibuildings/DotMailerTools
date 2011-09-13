@@ -178,7 +178,10 @@ class DMClient
 
         return true;
     }
-
+    
+    /**
+     *
+     */
     public function getSuppressionList($startDate, $select=100, $skip=0)
     {
         if (empty($startDate)) {
@@ -198,7 +201,10 @@ class DMClient
         return $contacts;
     }
     
-    public function getContact()
+    /**
+     *
+     */
+    private function getContact()
     {
         return new DmContact(array());
     }

@@ -5,7 +5,7 @@ require_once 'custom/modules/IB_DMContactUpdater/include/DMContact.php';
 
 class IB_DMContactUpdaterController extends SugarController
 {
-    public function action_update()
+    public function action_sync()
     {
         // Init DMClient
         $wsdl = 'http://apiconnector.com/api.asmx?WSDL';
@@ -77,6 +77,7 @@ class IB_DMContactUpdaterController extends SugarController
     public function action_suppression_list()
     {
         $startDate = '2011-09-01T12:00:00';
+        $suppressedActions = array('subscribed', 'unsubscribed');
         
         // Init DMContact
         $dataMap = array();
@@ -95,11 +96,10 @@ class IB_DMContactUpdaterController extends SugarController
         try {
             $contacts = $client->suppressionList($startDate)
                                ->ListSuppressedContactsResult
-                               ->APIContactSuppressionSummary;;
+                               ->APIContactSuppressionSummary;
         } catch (SoapFault $e) {
             echo '<pre>';var_dump($e);echo '</pre>';
         }
-
 
         foreach($contacts as $key => $contact) {
             $dmSupContact  = new DMSuppressionContact($dataMap);
@@ -108,23 +108,29 @@ class IB_DMContactUpdaterController extends SugarController
             $sugarEmailAddress = new SugarEmailAddress();
             $addresses = $sugarEmailAddress->getBeansByEmailAddress($dmSupContact->email);
             
-            $beanId = $beanModule = "";
-            for($i=0; $i < count($addresses); $i++) {
-                for($j=0; $j < count($addresses[$i]->emailAddress->addresses); $j++) {
+            for($i = 0; $i < count($addresses); $i++) {
+                for($j = 0; $j < count($addresses[$i]->emailAddress->addresses); $j++) {
 
                     if($addresses[$i]->emailAddress->addresses[$j]['email_address'] != $dmSupContact->email) {
                         continue;
                     }
-
-                    $addresses[$i]->emailAddress->addresses[$j]['opt_out'] = ($dmSupContact->optIn) ? '1' : '0';
-                    $addresses[$i]->emailAddress->addresses[$j]['invalid_email'] = ($dmSupContact->reason == 'UnSubscribed') ? '0' : '1';
                     
-                    $beanId     = $addresses[$i]->emailAddress->addresses[$j]['bean_id'];
-                    $beanModule = $addresses[$i]->emailAddress->addresses[$j]['bean_module'];
+                    // set flag for optin or optout
+                    $addresses[$i]->emailAddress->addresses[$j]['opt_out'] = '0';
+                    if(!$dmSupContact->optIn || strtolower($dmSupContact->reason) === 'unsubscribed') {
+                        $addresses[$i]->emailAddress->addresses[$j]['opt_out'] = '1';
+                    } 
+                    
+                    // set flag for invalid email
+                    $addresses[$i]->emailAddress->addresses[$j]['invalid_email'] ='0';
+                    if (!in_array(strtolower($dmSupContact->reason), $suppressedActions)) {
+                        $addresses[$i]->emailAddress->addresses[$j]['invalid_email'] = '1';
+                    }
 
-                    $addresses[$i]->emailAddress->save($beanId, $beanModule);
-
-                    echo '<pre>';var_dump($addresses[$i]->emailAddress->addresses[$j]); echo '</pre>';
+                    $addresses[$i]->emailAddress->save(
+                        $addresses[$i]->emailAddress->addresses[$j]['bean_id'],
+                        $addresses[$i]->emailAddress->addresses[$j]['bean_module']
+                    );
                 }
             }
         }
