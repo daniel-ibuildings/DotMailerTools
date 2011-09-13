@@ -2,10 +2,20 @@
 
 require_once 'custom/modules/IB_DMContactUpdater/include/DMClient.php';
 require_once 'custom/modules/IB_DMContactUpdater/include/DMContact.php';
+require_once 'custom/modules/IB_DMContactUpdater/include/DMSuppressionContact.php';
 
 class IB_DMContactUpdaterController extends SugarController
 {
-    public function action_sync()
+    //protected $action_remap = array('index'=>'home');
+
+    public function action_home()
+    {
+        $this->view_object_map['bean'] = $this->bean;
+        $this->view = 'home';
+        echo "this is action sync";
+    }
+    
+    public function action_sync_contact()
     {
         // Init DMClient
         $wsdl = 'http://apiconnector.com/api.asmx?WSDL';
@@ -39,42 +49,8 @@ class IB_DMContactUpdaterController extends SugarController
             echo '<pre>';var_dump($e);echo '</pre>';
         }
     }
-    
-    public function action_create()
-    {
-        // Init DMClient
-        $wsdl = 'http://apiconnector.com/api.asmx?WSDL';
-        $username = 'apiuser-36ca1349fd66@apiconnector.com';
-        $password = '0OB1!0|1NRc407Ii';
 
-        // Init sugar contact
-        $id = 'bf9bc1c6-dc81-1115-1fe0-4e54d12e8f15';
-        $bean = new Contact();
-        $bean->retrieve($id);
-        $bean->fill_in_additional_list_fields();
-        
-        // Init DMContact
-        $dataMap = array();
-        $dataMap['email']     = array('soap' => 'Email',     'sugar' => 'email1');
-        $dataMap['firstName'] = array('soap' => 'FIRSTNAME', 'sugar' => 'first_name');
-        $dataMap['fullName']  = array('soap' => 'FULLNAME',  'sugar' => 'name');
-        $dataMap['lastName']  = array('soap' => 'LASTNAME',  'sugar' => 'last_name');
-
-        $contact = new DMContact($dataMap);
-        $contact->initFromSugarBean($bean);
-        $contact->email = "danielkiddoTEST@ibuildings.com";
-        
-        $client = new DMClient(new SoapClient($wsdl), $username, $password);
-        
-        try {
-            $client->createContact($contact);
-        } catch (Exception $e) {
-            echo '<pre>';var_dump($e);echo '</pre>';
-        }
-    }
-    
-    
-    public function action_suppression_list()
+    public function action_sync_suppression()
     {
         $startDate = '2011-09-01T12:00:00';
         $suppressedActions = array('subscribed', 'unsubscribed');
@@ -94,7 +70,7 @@ class IB_DMContactUpdaterController extends SugarController
         $client = new DMClient(new SoapClient($wsdl), $username, $password);
 
         try {
-            $contacts = $client->suppressionList($startDate)
+            $contacts = $client->getSuppressionList($startDate)
                                ->ListSuppressedContactsResult
                                ->APIContactSuppressionSummary;
         } catch (SoapFault $e) {
