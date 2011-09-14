@@ -23,7 +23,7 @@ class IB_DMContactUpdaterViewList extends ViewList
     
     public function listViewProcess()
     {
-        if(!this->header)
+        if(!$this->header)
             return;
             
         $this->lv->setup($this->seed, 'custom/modules/IB_DMContactUpdater/tpls/ListView.tpl', $this->where, $this->params);
