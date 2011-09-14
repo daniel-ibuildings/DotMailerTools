@@ -6,7 +6,7 @@ require_once 'custom/modules/IB_DMContactUpdater/include/DMSuppressionContact.ph
 
 class IB_DMContactUpdaterController extends SugarController
 {
-    protected $action_remap = array('index'=>'home');
+    //protected $action_remap = array('index'=>'home');
 
     public function action_home()
     {
