@@ -6,7 +6,7 @@ class IB_DMContactUpdaterViewList extends ViewList
 {
     public function __construct()
     {
-        parent::SugarView();
+        parent::ViewList();
     }
     
     public function display()
