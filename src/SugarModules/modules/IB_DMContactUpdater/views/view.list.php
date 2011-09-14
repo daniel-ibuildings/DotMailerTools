@@ -20,4 +20,14 @@ class IB_DMContactUpdaterViewList extends ViewList
         parent::preDisplay();
         $this->lv->targetList = true;
     }
+    
+    public function listViewProcess()
+    {
+        if(!this->header)
+            return;
+            
+        $this->lv->setup($this->seed, 'custom/modules/IB_DMContactUpdater/tpls/ListView.tpl', $this->where, $this->params);
+        
+        echo $this->lv->display();
+    }
 }
