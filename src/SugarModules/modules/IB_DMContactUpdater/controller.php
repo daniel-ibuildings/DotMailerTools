@@ -6,13 +6,11 @@ require_once 'custom/modules/IB_DMContactUpdater/include/DMSuppressionContact.ph
 
 class IB_DMContactUpdaterController extends SugarController
 {
-    //protected $action_remap = array('index'=>'home');
+    protected $action_remap = array('index'=>'home');
 
     public function action_home()
     {
-        $this->view_object_map['bean'] = $this->bean;
         $this->view = 'home';
-        echo "this is action sync";
     }
     
     public function action_sync_contact()

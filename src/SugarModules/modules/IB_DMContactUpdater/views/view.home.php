@@ -11,8 +11,8 @@ class IB_DMContactUpdaterViewHome extends SugarView
     
     public function display()
     {
-        parent::display();
         echo "<h1>Sync Actions</h1>";
+        parent::display();
     }
     
     public function preDisplay()
