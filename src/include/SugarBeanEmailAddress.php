@@ -5,14 +5,14 @@ class SugarBeanEmailAddress extends SugarEmailAddress
 {
     protected $contact;
     protected $dataMap;
-    protected $suppressedReason;
+    protected $suppressionReason;
 
     public function __construct($contact, $dataMap)
     {
        parent::SugarEmailAddress();
        $this->contact = $contact;
        $this->dataMap = $dataMap;
-       $this->suppressedReason = array('subscribed', 'unsubscribed');
+       $this->suppressionReason = array('subscribed', 'unsubscribed');
     }    
 
     public function updateContact()
@@ -29,13 +29,13 @@ class SugarBeanEmailAddress extends SugarEmailAddress
                 
                 // set flag for optin or optout
                 $address->emailAddress->addresses[$j]['opt_out'] = '0';
-                if(!$dmSupContact->optIn || strtolower($contact->reason) === 'unsubscribed') {
+                if(!$contact->optIn || strtolower($contact->reason) === 'unsubscribed') {
                     $address->emailAddress->addresses[$j]['opt_out'] = '1';
                 } 
                 
                 // set flag for invalid email
                 $address->emailAddress->addresses[$j]['invalid_email'] ='0';
-                if (!in_array(strtolower($contact->reason), $this->suppressedReason)) {
+                if (!in_array(strtolower($contact->reason), $this->suppressionReason)) {
                     $address->emailAddress->addresses[$j]['invalid_email'] = '1';
                 }
 

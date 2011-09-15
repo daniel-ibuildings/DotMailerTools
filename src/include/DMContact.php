@@ -140,8 +140,8 @@ class DMContact
 
         $dataFields = array();
 
-        unset($self['dataMap']);
-        unset($self['defaultDotMailerFields']);
+        unset($self['dataMap'], $self['_dataMap']);
+        unset($self['defaultDotMailerFields'], $self['_defaultDotMailerFields']);
         unset($self['id']);
         unset($self['optIn']);
         unset($self['audienceType']);
