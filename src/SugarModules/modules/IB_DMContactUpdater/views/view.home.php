@@ -7,17 +7,15 @@ class IB_DMContactUpdaterViewHome extends SugarView
     public function __construct()
     {
         parent::SugarView();
+        $this->options['show_footer'] = false;
     }
     
     public function display()
     {
-        echo "<h1>Sync Actions</h1>";
-        parent::display();
-    }
-    
-    public function preDisplay()
-    {
-        parent::preDisplay();
-        $this->lv->targetList = true;
+        if($_REQUEST['success']) {
+            $this->ss->assign('SYNC_SUCCESS', $_REQUEST['success']);
+        }
+        
+        $this->ss->display('modules/IB_DMContactUpdater/tpls/home.tpl');
     }
 }
