@@ -206,6 +206,6 @@ class DMClient
      */
     private function getContact()
     {
-        return new DmContact(array());
+        return new DMContact(array());
     }
 }
