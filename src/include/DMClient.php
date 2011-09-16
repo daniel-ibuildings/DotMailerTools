@@ -161,7 +161,7 @@ class DMClient
     {
         try {
             $response  = $this->getContactByEmail($contact->email);
-            $dmContact = $this->getContact();
+            $dmContact = new DMContact(array());
             $dmContact->initFromSoap($response);
         } catch(ContactNotFoundException $e) {
             // Expected exception, do nothing...
@@ -199,13 +199,5 @@ class DMClient
             throw new FailedToFetchContactsException;
         }
         return $contacts;
-    }
-    
-    /**
-     *
-     */
-    private function getContact()
-    {
-        return new DMContact(array());
     }
 }
