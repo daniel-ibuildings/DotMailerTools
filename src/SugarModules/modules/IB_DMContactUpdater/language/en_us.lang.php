@@ -68,7 +68,9 @@ $mod_strings = array (
   'LBL_IB_DMCONTACTUPDATER_SUCCESS' => 'Synchronising contacts was successful',
   'LBL_IB_DMCONTACTUPDATER_SYNC_CONTACT' => 'Sync Contacts',
   'LBL_IB_DMCONTACTUPDATER_SYNC_SUPPRESSION' => 'Sync Suppression List',
+  'LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS' => 'Sync Campaigns',
   'LBL_IB_DMCONTACTUPDATER_SYNC_CONTACT_LAB' => 'Synchronise contacts from SugarCRM to dotMailer',
   'LBL_IB_DMCONTACTUPDATER_SYNC_SUPPRESSION_LAB' => 'Synchronise suppression list from dotMailer with SugarCRM',
+  'LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS_LAB' => 'Synchronise campaigns from dotMailer with SugarCRM',
 );
 ?>

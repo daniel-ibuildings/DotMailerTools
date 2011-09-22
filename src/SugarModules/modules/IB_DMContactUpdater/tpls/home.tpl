@@ -41,6 +41,10 @@
                         <td>{sugar_translate label='LBL_IB_DMCONTACTUPDATER_SYNC_SUPPRESSION_LAB' module='IB_DMContactUpdater'}</td>
                         <td class="dm-button"><input type="button" onclick="location.href='index.php?module=IB_DMContactUpdater&action=sync_suppression'" class="button primary" value="{sugar_translate label='LBL_IB_DMCONTACTUPDATER_SYNC_SUPPRESSION' module='IB_DMContactUpdater'}"></td>
                     </tr>
+                    <tr>
+                        <td>{sugar_translate label='LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS_LAB' module='IB_DMContactUpdater'}</td>
+                        <td class="dm-button"><input type="button" onclick="location.href='index.php?module=IB_DMContactUpdater&action=sync_campaigns'" class="button primary" value="{sugar_translate label='LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS' module='IB_DMContactUpdater'}"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

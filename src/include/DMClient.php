@@ -85,7 +85,7 @@ class DMClient
     /**
      *
      */
-    private function getParams($params = array())
+    private function _getParams($params = array())
     {
         $params['username'] = $this->_username;
         $params['password'] = $this->_password;
@@ -101,7 +101,7 @@ class DMClient
             throw new InvalidArgumentException;
         }
 
-        $params = $this->getParams(array('email' => $email));
+        $params = $this->_getParams(array('email' => $email));
 
         try {
             $result = $this->_soapClient
@@ -123,7 +123,7 @@ class DMClient
             throw new InvalidArgumentException;
         }
 
-        $params = $this->getParams();
+        $params = $this->_getParams();
         $params['contact'] = $contact->toSoapParam();
         $params['contact']['ID'] = $id;
 
@@ -141,7 +141,7 @@ class DMClient
      */
     public function createContact(DMContact $contact)
     {
-        $params = $this->getParams();
+        $params = $this->_getParams();
         $params['contact'] = $contact->toSoapParam();
         $params['contact']['ID'] = '-1';
 
@@ -188,7 +188,7 @@ class DMClient
             throw new InvalidArgumentException;
         }
         
-        $params = $this->getParams();
+        $params = $this->_getParams();
         $params['startDate'] = $startDate;
         $params['select'] = $select;
         $params['skip'] = $skip;
@@ -199,5 +199,56 @@ class DMClient
             throw new FailedToFetchContactsException;
         }
         return $contacts;
+    }
+    
+    /**
+     *
+     */
+    public function getCampaigns($startDate, $select=500, $skip=0)
+    {
+        if (empty($startDate)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $params = $this->_getParams();
+        $params['startDate'] = $startDate;
+        $params['select']    = $select;
+        $params['skip']      = $skip;
+        
+        try {
+            $campaigns = $this->_soapClient->ListSentCampaignsWithActivitySinceDate($params)
+                                           ->ListSentCampaignsWithActivitySinceDateResult
+                                           ->APICampaign;
+        } catch (SoapFault $e) {
+            throw new FailedToFetchContactsException;
+        }
+        
+        return $campaigns;
+    }
+
+    /**
+     *
+     */
+    public function getCampaignActivitiesSinceDate($startDate, $campaignId, $select=500, $skip=0)
+    {
+        if (empty($startDate) || empty($campaignId)) {
+            throw new InvalidArgumentException;
+        }
+        
+        $params = $this->_getParams();
+        $params['startDate'] = $startDate;
+        $params['campaignId']= $campaignId;
+        $params['select']    = $select;
+        $params['skip']      = $skip;
+        
+        try {
+            $campaignActivities = $this->_soapClient->ListCampaignActivitiesSinceDate($params)
+                                                    ->ListCampaignActivitiesSinceDateResult
+                                                    ->APICampaignContactSummary;
+        } catch (SoapFault $e) {
+            throw new FailedToFetchContactsException;
+        }
+        
+        return $campaignActivities;
     }
 }

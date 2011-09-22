@@ -441,4 +441,119 @@ class DMClientTest extends PHPUnit_Framework_TestCase
         $client   = new DMClient($dotMailerClient, 'username', 'password');
         $contacts = $client->getSuppressionList($startDate);
     }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetCampaignFailsWithNoParam()
+    {
+        $soapMock = $this->getMockFromWsdl($this->_wsdl, 'ListSentCampaignsWithActivitySinceDate');
+        
+        $client = new DMClient($soapMock, 'username', 'password');
+        $client->getCampaigns('');
+    }
+
+    public function testGetCampaignSuccessful()
+    {
+        $startDate = '2011-09-01T12:00:00';
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'ListSentCampaignsWithActivitySinceDateSuccess');
+        $dotMailerClient->expects($this->once())
+                        ->method('ListSentCampaignsWithActivitySinceDate')
+                        ->will($this->returnValue(new stdClass));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+
+        $campaigns = $client->getCampaigns($startDate);
+
+        $this->assertEquals(0, count($campaignActivities));
+    }
+    
+    /**
+     * @expectedException FailedToFetchContactsException
+     */
+    public function testGetCampaignFails()
+    {
+        $startDate = '2011-09-01T12:00:00';
+
+        $exception = new SoapFault('soap:Server', 'Failed to fetch campaigns');
+
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'ListSentCampaignsWithActivitySinceDateFails');
+        $dotMailerClient->expects($this->any())
+                        ->method('ListSentCampaignsWithActivitySinceDate')
+                        ->will($this->throwException($exception));
+
+        $client   = new DMClient($dotMailerClient, 'username', 'password');
+        $campaigns = $client->getCampaigns($startDate);
+    }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetCampaignActivitiesSinceDateFailsWithNoStartDate()
+    {
+        $soapMock = $this->getMockFromWsdl($this->_wsdl, 'ListCampaignActivitiesSinceDateNoStartDate');
+        
+        $client = new DMClient($soapMock, 'username', 'password');
+        $client->getCampaignActivitiesSinceDate('', 123);
+    }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetCampaignActivitiesSinceDateFailsWithNoCampaignId()
+    {
+        $startDate = '2011-09-01T12:00:00';
+        
+        $soapMock = $this->getMockFromWsdl($this->_wsdl, 'ListCampaignActivitiesSinceDateNoCampaignId');
+        
+        $client = new DMClient($soapMock, 'username', 'password');
+        $client->getCampaignActivitiesSinceDate($startDate, '');
+    }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetCampaignActivitiesSinceDateFailsWithNoParams()
+    {
+        $soapMock = $this->getMockFromWsdl($this->_wsdl, 'ListCampaignActivitiesSinceDateNoParams');
+        
+        $client = new DMClient($soapMock, 'username', 'password');
+        $client->getCampaignActivitiesSinceDate('', '');
+    }
+    
+    public function testGetCampaignActivitiesSinceDateSuccessful()
+    {
+        $startDate = '2011-09-01T12:00:00';
+        
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'ListCampaignActivitiesSinceDate');
+        $dotMailerClient->expects($this->once())
+                        ->method('ListCampaignActivitiesSinceDate')
+                        ->will($this->returnValue(new stdClass));
+
+        $client = new DMClient($dotMailerClient, 'username', 'password');
+
+        $campaignActivities = $client->getCampaignActivitiesSinceDate($startDate, 123);
+
+        $this->assertEquals(0, count($campaignActivities));
+    }
+    
+    /**
+     * @expectedException FailedToFetchContactsException
+     */
+    public function testGetCampaignActivitiesSinceDateFails()
+    {
+        $startDate = '2011-09-01T12:00:00';
+
+        $exception = new SoapFault('soap:Server', 'Failed to fetch campaigns activities');
+
+        $dotMailerClient = $this->getMockFromWsdl($this->_wsdl, 'ListCampaignActivitiesSinceDateFailed');
+        $dotMailerClient->expects($this->any())
+                        ->method('ListCampaignActivitiesSinceDate')
+                        ->will($this->throwException($exception));
+
+        $client   = new DMClient($dotMailerClient, 'username', 'password');
+        $campaignActivities = $client->getCampaignActivitiesSinceDate($startDate, 123);
+    }
+    
 }
