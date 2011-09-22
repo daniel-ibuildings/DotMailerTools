@@ -71,6 +71,6 @@ $mod_strings = array (
   'LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS' => 'Sync Campaigns',
   'LBL_IB_DMCONTACTUPDATER_SYNC_CONTACT_LAB' => 'Synchronise contacts from SugarCRM to dotMailer',
   'LBL_IB_DMCONTACTUPDATER_SYNC_SUPPRESSION_LAB' => 'Synchronise suppression list from dotMailer with SugarCRM',
-  'LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS_LAB' => 'Synchronise campaigns from dotMailer with SugarCRM',
+  'LBL_IB_DMCONTACTUPDATER_SYNC_CAMPAIGNS_LAB' => 'Synchronise campaigns from dotMailer to SugarCRM',
 );
 ?>

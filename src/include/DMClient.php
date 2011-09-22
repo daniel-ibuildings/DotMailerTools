@@ -105,8 +105,8 @@ class DMClient
 
         try {
             $result = $this->_soapClient
-                            ->getContactByEmail($params)
-                            ->GetContactByEmailResult;
+                ->getContactByEmail($params)
+                ->GetContactByEmailResult;
         } catch (SoapFault $e) {
             DMSoapException::factory($e);
         }
@@ -216,9 +216,10 @@ class DMClient
         $params['skip']      = $skip;
         
         try {
-            $campaigns = $this->_soapClient->ListSentCampaignsWithActivitySinceDate($params)
-                                           ->ListSentCampaignsWithActivitySinceDateResult
-                                           ->APICampaign;
+            $campaigns = $this->_soapClient
+                ->ListSentCampaignsWithActivitySinceDate($params)
+                ->ListSentCampaignsWithActivitySinceDateResult
+                ->APICampaign;
         } catch (SoapFault $e) {
             throw new FailedToFetchContactsException;
         }
@@ -242,9 +243,10 @@ class DMClient
         $params['skip']      = $skip;
         
         try {
-            $campaignActivities = $this->_soapClient->ListCampaignActivitiesSinceDate($params)
-                                                    ->ListCampaignActivitiesSinceDateResult
-                                                    ->APICampaignContactSummary;
+            $campaignActivities = $this->_soapClient
+                ->ListCampaignActivitiesSinceDate($params)
+                ->ListCampaignActivitiesSinceDateResult
+                ->APICampaignContactSummary;
         } catch (SoapFault $e) {
             throw new FailedToFetchContactsException;
         }
