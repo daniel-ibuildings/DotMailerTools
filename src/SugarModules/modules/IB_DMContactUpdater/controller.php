@@ -6,6 +6,7 @@ require_once 'custom/modules/IB_DMContactUpdater/include/DMCampaign.php';
 require_once 'custom/modules/IB_DMContactUpdater/include/DMProspectList.php';
 require_once 'custom/modules/IB_DMContactUpdater/include/SugarBeanContacts.php';
 require_once 'custom/modules/IB_DMContactUpdater/include/SugarBeanEmailAddress.php';
+require_once 'custom/modules/IB_DMContactUpdater/include/DMSyncAudit.php';
 
 class IB_DMContactUpdaterController extends SugarController
 {
@@ -28,13 +29,15 @@ class IB_DMContactUpdaterController extends SugarController
         $this->dataMap['firstName'] = array('soap' => 'FIRSTNAME', 'sugar' => 'first_name');
         $this->dataMap['fullName']  = array('soap' => 'FULLNAME',  'sugar' => 'name');
         $this->dataMap['lastName']  = array('soap' => 'LASTNAME',  'sugar' => 'last_name');
-        $this->dataMap['accountName']  = array('soap' => 'ACCOUNTNAME',  'sugar' => 'account_name');
+        //$this->dataMap['accountName']  = array('soap' => 'ACCOUNTNAME',  'sugar' => 'account_name');
         
         $date = new DateTime();
         $date->sub(new DateInterval('P30D'));
         
         $this->startDate   =  $date->format('Y-m-d').'T12:00:00';
-        $this->redirectUrl = 'index.php?module=IB_DMContactUpdater&action=index&return_module=IB_DMContactUpdater&return_action=index&success=1';
+        $this->redirectUrl = 'index.php?module=IB_DMContactUpdater&action=index&return_module=IB_DMContactUpdater&return_action=index';
+        
+        $this->audit = DMSyncAudit::getInstance();
         
     }
     
@@ -47,6 +50,7 @@ class IB_DMContactUpdaterController extends SugarController
     {        
         $beanContacts = new SugarBeanContacts();
         $beans = $beanContacts->getBeanContacts();
+        
         // process only first ten for now
         foreach($beans as $key => $bean) {
             if($key < 10) {
@@ -58,9 +62,12 @@ class IB_DMContactUpdaterController extends SugarController
                 } catch (SoapFault $e) {
                     echo '<pre>';var_dump($e);echo '</pre>';
                 }
+                $this->audit->add('contacts', 'total');
             }
         }
-        $this->redirect_url = $this->redirectUrl;
+        
+        $_REQUEST['contacts'] = $this->audit->getAudits('contacts');
+        $this->view = 'home';
     }
 
     public function action_sync_suppression()
@@ -76,35 +83,46 @@ class IB_DMContactUpdaterController extends SugarController
         foreach($contacts as $key => $contact) {
             $sugarEmailAddress = new SugarBeanEmailAddress($contact, $this->dataMap);
             $sugarEmailAddress->updateContact();
+            
+            $this->audit->add('suppressions', 'total');
         }
-        $this->redirect_url = $this->redirectUrl;
+
+        $_REQUEST['suppressions'] = $this->audit->getAudits('suppressions');
+        $this->view = 'home';
     }
-    
+
     public function action_sync_campaigns()
     {
         $campaigns = $this->client->getCampaigns($this->startDate);
+        DMClient::$audits['campaigns']['total'] = count($campaigns);
+        
         foreach($campaigns as $key => $campaign) {
             $dmCampaign = new DMCampaign($campaign->Name);
 
             $campaignActivities = $this->client->getCampaignActivitiesSinceDate($this->startDate, $campaign->Id);
-            foreach($campaignActivities as $camActivity) {
+            foreach($campaignActivities as $key=>$camActivity) {
                 $dmCampaign->start_date = $dmCampaign->end_date = substr($camActivity->DateSent, 0, 10);
-                
+
                 $addresses = new SugarEmailAddress();
                 $addresses = $addresses->getBeansByEmailAddress($camActivity->Email);
                 foreach($addresses as $address ) {
                     $dmCampaign->prospects[] = array(
                         'id'     => $address->id,
-                        'module' => get_class($address) . 's'
+                        'module' => get_class($address),
+                        'activities' => array (
+                            'viewed' => $camActivity->NumOpens,
+                            'link'   => $camActivity->NumClicks
+                        )
                     );
                 }
             }
-            
             // add campaign if an email exists in Sugar
             if(count($dmCampaign->prospects) > 0) {
                 $campaignId = $dmCampaign->save();
             }
+            $this->audit->add('campaigns', 'total');
         }
-        $this->redirect_url = $this->redirectUrl;
+        $_REQUEST['campaigns'] = $this->audit->getAudits('campaigns');
+        $this->view = 'home';
     }
 }

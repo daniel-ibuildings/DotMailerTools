@@ -1,11 +1,18 @@
 <?php
 
 /**
- *
+ * Represents SugarCRM contact or DotMailer contact
  */
 class DMContact
 {
+    /**
+     * Data mapping between SugarCRM and DotMailer
+     */
     private $_dataMap;
+    
+    /**
+     * Default DotMailer fields
+     */
     private $_defaultDotMailerFields = array(
         'ID',
         'Email',
@@ -16,7 +23,10 @@ class DMContact
     );
 
     /**
+     * Constructs an instance of this class
      *
+     * @param Array collection of datamap fields
+     * @return void
      */
     public function __construct($dataMap)
     {
@@ -24,7 +34,10 @@ class DMContact
     }
 
     /**
+     * Appends default fields to datamap
      *
+     * @param  Array collection of datamap fields
+     * @return Array datamap fields 
      */
     private function appendDefaultFields($dataMap)
     {
@@ -33,7 +46,10 @@ class DMContact
     }
 
     /**
+     * Initialises properties of this class from data collected using SOAP
      *
+     * @param  StdClass An object which contains data from DotMailer
+     * @return void
      */
     public function initFromSoap($result)
     {
@@ -53,7 +69,6 @@ class DMContact
             $dataValues = $dataFields->Values;
             
             // @codingStandardsIgnoreEnd
-
             $index = array_search($keys['soap'], $dataKeys->string);
             if ($index) {
                 $this->$property = $dataValues->anyType[$index];
@@ -79,7 +94,10 @@ class DMContact
     }
 
     /**
+     * Initialises properties of this class from SugarBean data
      *
+     * @param  StdClass An object which contains data from DotMailer
+     * @return void
      */
     public function initFromSugarBean($bean)
     {
@@ -95,7 +113,10 @@ class DMContact
     }
 
     /**
+     * Filters required object fields that is need  for comparison
      *
+     * @param none
+     * @return void
      */
     public function getComparableArray()
     {
@@ -107,7 +128,10 @@ class DMContact
     }
 
     /**
+     * Compares the object with another object
      *
+     * @param DMContact An object of contact 
+     * @return boolean
      */
     public function compare(DMContact $contact)
     {
@@ -115,7 +139,10 @@ class DMContact
     }
 
     /**
+     * Changes SugarCRM contact fields to DotMailer corresponding contact fields
      *
+     * @param none
+     * @return Array
      */
     public function toSoapParam()
     {

@@ -56,15 +56,39 @@ class DMSoapException
 }
 
 /**
- *
+ * A class that simulates the SOAP interactions
+ * is is used to create a channel between SugarCRM and DtMailer
  */
 class DMClient
 {
+    /**
+     * A variable to save a soap client instance
+     */
     private $_soapClient;
-    private $_username;
-    private $_password;
 
     /**
+     * Username for the soap client
+     */
+    private $_username;
+
+    /**
+     * Password for the soap client
+     */
+    private $_password;
+    
+    /**
+     * An instance of DMSyncAudit
+     */
+    private $audit;
+
+    /**
+     * Constructs an instance of this class, 
+     * if the a valid parameter passed to it or throws relevant exceptions
+     * 
+     *
+     * @param SoapClient SOAP client
+     * @param String     Username for the soap 
+     * @param String     password for the soap 
      *
      */
     public function __construct(SoapClient $soapClient, $username, $password)
@@ -80,10 +104,15 @@ class DMClient
         $this->_soapClient = $soapClient;
         $this->_username = $username;
         $this->_password = $password;
+        
+        $this->audit = DMSyncAudit::getInstance();
     }
 
     /**
+     * Adds user name and password to params and return params array
      *
+     * @param Array parameters required to make a call to DotMailer
+     * @return Array
      */
     private function _getParams($params = array())
     {
@@ -93,7 +122,10 @@ class DMClient
     }
 
     /**
+     * Fetches contacts form DotMailer by email of the contact
      *
+     * @param  String   Email address of a contact
+     * @return StdClass An object of contact 
      */
     public function getContactByEmail($email)
     {
@@ -115,7 +147,11 @@ class DMClient
     }
 
     /**
+     * Updates existing DotMailer contact detail
      *
+     * @param Integer   Id of contact
+     * @param DMContact The new contact detail
+     * @return Boolean
      */
     public function updateContact($id, DMContact $contact)
     {
@@ -132,12 +168,14 @@ class DMClient
         } catch (SoapFault $e) {
             throw new FailedUpdateException;
         }
-
         return true;
     }
 
     /**
+     * Adds a new contact in DotMailer
      *
+     * @param  DMContact the contact detail
+     * @return Boolean
      */
     public function createContact(DMContact $contact)
     {
@@ -150,12 +188,18 @@ class DMClient
         } catch (SoapFault $e) {
             throw new FailedCreateException;
         }
-
         return true;
     }
 
     /**
+     * Decides what to do with the contact,
+     * It checks if contact already in DotMailer, 
+     *  if it does it calls update function to update contact
+     * Or if contact does not exist in DotMailer 
+     * it calls create function to add contact
      *
+     * @param DMContact Contact detail 
+     * @return boolean
      */
     public function syncContact(DMContact $contact)
     {
@@ -172,17 +216,23 @@ class DMClient
             $contact->audienceType = $dmContact->audienceType;
 
             $this->updateContact($dmContact->id, $contact);
+            $this->audit->add('contacts', 'updated');
         } else {
             $this->createContact($contact);
+            $this->audit->add('contacts', 'created');
         }
-
         return true;
     }
     
     /**
+     * Fetches suppression lists from DotMailer
      *
+     * @param  String   The start date from which suppression lists fetched
+     * @param  Integer  The number of suppression lists to return
+     * @param  Integer  The skip value
+     * @return StdClass Contacts as stdclass
      */
-    public function getSuppressionList($startDate, $select=100, $skip=0)
+    public function getSuppressionList($startDate, $select=500, $skip=0)
     {
         if (empty($startDate)) {
             throw new InvalidArgumentException;
@@ -202,55 +252,62 @@ class DMClient
     }
     
     /**
+     * Fetches Campaigns from DotMailer
      *
+     * @param  String   The start date from which campaigns fetched
+     * @param  Integer  The number of campains to return
+     * @param  Integer  The skip value
+     * @return StdClass Campaigns as stdclass
      */
     public function getCampaigns($startDate, $select=500, $skip=0)
     {
         if (empty($startDate)) {
             throw new InvalidArgumentException;
         }
-        
+
         $params = $this->_getParams();
         $params['startDate'] = $startDate;
         $params['select']    = $select;
         $params['skip']      = $skip;
-        
+
         try {
-            $campaigns = $this->_soapClient
-                ->ListSentCampaignsWithActivitySinceDate($params)
-                ->ListSentCampaignsWithActivitySinceDateResult
-                ->APICampaign;
+            $campaigns = $this->_soapClient->ListSentCampaignsWithActivitySinceDate($params)
+                                           ->ListSentCampaignsWithActivitySinceDateResult
+                                           ->APICampaign;
         } catch (SoapFault $e) {
             throw new FailedToFetchContactsException;
         }
-        
         return $campaigns;
     }
 
     /**
+     * Fetches Campaign activities from DotMailer
      *
+     * @param  String   The start date from which campaign activities fetched
+     * @param  Integer  The number of campaign activities to return
+     * @param  Integer  The skip value
+     * @return StdClass Campaign activities as stdclass
      */
     public function getCampaignActivitiesSinceDate($startDate, $campaignId, $select=500, $skip=0)
     {
         if (empty($startDate) || empty($campaignId)) {
             throw new InvalidArgumentException;
         }
-        
+
         $params = $this->_getParams();
         $params['startDate'] = $startDate;
         $params['campaignId']= $campaignId;
         $params['select']    = $select;
         $params['skip']      = $skip;
-        
+
         try {
-            $campaignActivities = $this->_soapClient
-                ->ListCampaignActivitiesSinceDate($params)
-                ->ListCampaignActivitiesSinceDateResult
-                ->APICampaignContactSummary;
+            $campaignActivities = $this->_soapClient->ListCampaignActivitiesSinceDate($params)
+                                                    ->ListCampaignActivitiesSinceDateResult
+                                                    ->APICampaignContactSummary;
         } catch (SoapFault $e) {
             throw new FailedToFetchContactsException;
         }
-        
         return $campaignActivities;
     }
+    
 }

@@ -1,4 +1,8 @@
 <?php
+
+require_once 'custom/modules/IB_DMContactUpdater/include/SugarBeanCampaignLog.php';
+require_once 'custom/modules/IB_DMContactUpdater/include/DMSyncAudit.php';
+
 /**
  * This class represents a Campaign that needs to be created of dot mailer.
  * 
@@ -21,6 +25,7 @@ class DMCampaign extends Campaign
         $this->status = 'Complete';
         $this->campaign_type = 'Email';
         $this->prospects = array();
+        $this->audit = DMSyncAudit::getInstance();
     }
 
     /**
@@ -32,6 +37,7 @@ class DMCampaign extends Campaign
      * - The campaign is new 
      *      - create a new record at sugar
      *      - create new prospect list
+     *      - Add a record on campaign log
      *
      * @return void
      */
@@ -40,6 +46,7 @@ class DMCampaign extends Campaign
         $result = $this->isAlreadyAtSugar();
         // already at sugar ignore it
         if ($result === true) {
+            $this->audit->add('campaigns', 'alreadyAtSugar');
             return ;
         } 
         
@@ -47,13 +54,22 @@ class DMCampaign extends Campaign
         if ($result instanceOf Campaign) {
             $result->end_date = $this->end_date;
             $this->id = $result->save();
+            $this->audit->add('campaigns', 'updated');
+            
         } else {
+            $this->assigned_user_id = 1;
             $this->id = parent::save();
+            
+            // create a campaign log 
+            $sugarCampaignLog = new SugarBeanCampaignLog($this);
+            $sugarCampaignLog->createProspectCampaignLogs($this->prospects);
+            
+            $this->audit->add('campaigns', 'created');
         }
         // create target list
         $this->attachProspects();
     }
-    
+
     /**
      * Create and relate campaign to the prospect list
      * 
