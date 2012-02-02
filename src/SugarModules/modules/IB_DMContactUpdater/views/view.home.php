@@ -12,17 +12,18 @@ class IB_DMContactUpdaterViewHome extends SugarView
     
     public function display()
     {
-        if($_REQUEST['suppressions']) {
+        if(array_key_exists('suppressions', $_REQUEST) && isset($_REQUEST['suppressions'])) {
             $this->ss->assign('suppressions', $_REQUEST['suppressions']);
         }
         
-        if($_REQUEST['contacts']) {
+        if(array_key_exists('contacts', $_REQUEST)  && isset($_REQUEST['contacts'])) {
             $this->ss->assign('contacts', $_REQUEST['contacts']);
         }
         
-        if($_REQUEST['campaigns']) {
+        if(array_key_exists('campaigns', $_REQUEST)  && isset($_REQUEST['campaigns'])) {
             $this->ss->assign('campaigns', $_REQUEST['campaigns']);
         }
+        
         $this->ss->display('modules/IB_DMContactUpdater/tpls/home.tpl');
     }
 }

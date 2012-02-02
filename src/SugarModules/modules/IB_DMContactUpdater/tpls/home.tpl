@@ -26,11 +26,6 @@
 <body class="dm-body">
     <div id="main">
         <div id="content" class="dm-content">
-            <span class="message">{$RESULT}</span>
-            { if $SYNC_SUCCESS eq '1' }
-                <span class="message">{sugar_translate label='LBL_IB_DMCONTACTUPDATER_SUCCESS' module='IB_DMContactUpdater'}</span>
-            {/if}
-            
             <h2>Synchronise Actions</h2>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="list view">
                 <tbody>

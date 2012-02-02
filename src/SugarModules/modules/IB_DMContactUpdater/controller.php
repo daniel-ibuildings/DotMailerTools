@@ -29,7 +29,7 @@ class IB_DMContactUpdaterController extends SugarController
         $this->dataMap['firstName'] = array('soap' => 'FIRSTNAME', 'sugar' => 'first_name');
         $this->dataMap['fullName']  = array('soap' => 'FULLNAME',  'sugar' => 'name');
         $this->dataMap['lastName']  = array('soap' => 'LASTNAME',  'sugar' => 'last_name');
-        //$this->dataMap['accountName']  = array('soap' => 'ACCOUNTNAME',  'sugar' => 'account_name');
+        $this->dataMap['accountName']  = array('soap' => 'ACCOUNTNAME',  'sugar' => 'account_name');
         
         $date = new DateTime();
         $date->sub(new DateInterval('P30D'));
